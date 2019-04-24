@@ -18,6 +18,12 @@ package fm.last.citrine.web;
 import static fm.last.citrine.web.Constants.PARAM_CANCEL;
 import static fm.last.citrine.web.Constants.PARAM_DELETE;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +33,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
@@ -38,6 +45,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import fm.last.citrine.model.Task;
 import fm.last.citrine.service.TaskManager;
+import fm.last.commons.io.FileUtils;
 
 /**
  * Controller implementation for handling the form used for creating and editing Tasks.
@@ -100,10 +108,31 @@ public class TaskFormController extends SimpleFormController {
     String selectedGroupName = request.getParameter(Constants.PARAM_SELECTED_GROUP_NAME);
     if (selectedGroupName != null && !(Constants.GROUP_NAME_ALL.equals(selectedGroupName))) {
       backingObject.setSelectedGroupName(selectedGroupName);
-    }
+    }        
+    	    
     return backingObject;
   }
 
+  public static byte[] getInputAsBinary(InputStream requestStream) {
+      ByteArrayOutputStream bos = new ByteArrayOutputStream();
+      try {
+          byte[] buf = new byte[100000];
+          int bytesRead=0;
+          while ((bytesRead = requestStream.read(buf)) != -1){
+          //while (requestStream.available() > 0) {
+          //    int i = requestStream.read(buf);
+              bos.write(buf, 0, bytesRead);
+          }
+          requestStream.close();
+          bos.close();
+      } catch (IOException e) {
+      	e.printStackTrace();
+          //Logger log = Logger.getLogger(HttpUtils.class.getName());
+          //log.log(Level.SEVERE, "error while decoding http input stream", e);
+      }
+      return bos.toByteArray();
+  }
+  
   @Override
   public ModelAndView processFormSubmission(HttpServletRequest request, HttpServletResponse response, Object command,
       BindException errors) throws Exception {
@@ -127,6 +156,38 @@ public class TaskFormController extends SimpleFormController {
       if (oldTask != null) {
         newTask.setChildTasks(oldTask.getChildTasks());
       }
+      
+      String contentType = request.getHeader("Content-Type");
+      if(contentType.startsWith("multipart/form-data"))
+      {
+      	//found form data
+          String boundary = contentType.substring(contentType.indexOf("boundary=")+9);
+          // as of rfc7578 - prepend "\r\n--"
+          byte[] boundaryBytes = ("--" + boundary).getBytes(Charset.forName("UTF-8"));
+          
+          System.out.println(boundaryBytes);
+          
+          //byte[] payload = getInputAsBinary(httpExchange.getRequestBody());
+          //System.out.println(new String(payload));
+          
+          //ArrayList<MultiPart> list = new ArrayList<>();
+      }
+      	
+      String workingDrectory = FileUtils.getWorkingDirectory("" + taskDTO.getTask().getId());   
+      try
+      {
+      	InputStream ins = request.getInputStream();
+      	
+      	System.out.println(ins);
+      	
+      	ins.close();
+      	
+      }
+      catch(IOException ex)
+      {
+      	ex.printStackTrace();
+      }
+      
       taskManager.save(newTask);
     }
     return new ModelAndView(new RedirectView(getSuccessView(taskDTO.getSelectedGroupName())));

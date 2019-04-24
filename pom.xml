@@ -43,7 +43,7 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.19</version>
+      <version>5.1.47</version>
     </dependency>
     <dependency>
       <groupId>org.opensymphony.quartz</groupId>
@@ -201,6 +201,12 @@
       <artifactId>jta</artifactId>
       <version>1.1</version>
     </dependency>
+
+	<dependency>
+    	<groupId>commons-fileupload</groupId>
+    	<artifactId>commons-fileupload</artifactId>
+    	<version>1.3.1</version>
+	</dependency>
 
     <dependency>
       <groupId>fm.last.commons</groupId>

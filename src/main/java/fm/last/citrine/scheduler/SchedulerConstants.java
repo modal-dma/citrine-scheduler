@@ -25,6 +25,7 @@ public interface SchedulerConstants {
   public final String TASK_RUN_ID = "taskrunid";
   public final String JOB_BEAN = "jobbean";
   public final String TASK_BEAN_NAME = "taskbeanname";
+  public final String TASK_WORKING_DIRECTORY = "workingdir";
   public final String BEAN_FACTORY = "beanfactory";
 
   public final String SYS_OUT = "sysout";

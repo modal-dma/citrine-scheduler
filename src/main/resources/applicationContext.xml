@@ -67,6 +67,10 @@
     <property name="maxTaskRunResults" value="100" />
   </bean>
 
+	<bean id="userDAO" class="fm.last.citrine.dao.UserDAO">
+    <property name="sessionFactory" ref="mySessionFactory" />
+  </bean>
+
   <bean id="scheduler" class="org.quartz.impl.StdSchedulerFactory" factory-method="getDefaultScheduler" />
 
   <bean id="schedulerManager" class="fm.last.citrine.scheduler.SchedulerManager" destroy-method="shutdown">
@@ -149,6 +153,11 @@
     <property name="schedulerManager" ref="schedulerManager" />
   </bean>
 
+
+  <bean id="userManager" class="fm.last.citrine.service.UserManagerImpl">
+    <property name="userDAO" ref="userDAO" />
+  </bean>
+  
   <bean id="triggerListener" class="fm.last.citrine.scheduler.NonConcurrentJobTriggerListener">
     <property name="taskManager" ref="taskManager" />
     <property name="taskRunManager" ref="taskRunManager" />

@@ -59,6 +59,9 @@ public class Task {
   private String groupName;
   private String command;
   private String beanName;
+  private String scripfile;
+  private String dataset;
+  private String workingDirectory;
 
   private boolean enabled = DEFAULT_ENABLED;
   private boolean stopOnError = DEFAULT_STOP_ON_ERROR;
@@ -421,5 +424,48 @@ public class Task {
   public String toString() {
     return "id=" + id + ",name=" + name;
   }
+
+  @Basic
+public String getScripfile() {
+	return scripfile;
+}
+
+  @Basic
+  public void setScripfile(String scripfile) {
+		this.scripfile = scripfile;
+  }
+  @Basic
+  public String getDataset() {
+	return dataset;
+  }
+
+	public void setDataset(String dataset) {
+		this.dataset = dataset;
+	}
+	
+	@Basic
+	public String getWorkingDirectory() {
+		return workingDirectory;
+	}
+
+	public void setWorkingDirectory(String workingDirectory) {
+		this.workingDirectory = workingDirectory;
+	}
+
+//public String getDataset() {
+//	return dataset;
+//}
+//
+//public void setDataset(String dataset) {
+//	this.dataset = dataset;
+//}
+//
+//public String getScripfile() {
+//	return scripfile;
+//}
+//
+//public void setScripfile(String scripfile) {
+//	this.scripfile = scripfile;
+//}
 
 }

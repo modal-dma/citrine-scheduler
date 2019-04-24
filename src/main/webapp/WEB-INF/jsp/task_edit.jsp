@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="css/generic.css" type="text/css"/>
   </head>
   <body>
-    <form:form commandName="taskDTO" method="POST" action="task_edit.do">
+    <form:form commandName="taskDTO" method="POST" action="task_edit.do" enctype="miltipart/form-data" >
       <form:hidden path="selectedGroupName"/>
       <form:hidden path="task.id"/>
       <form:hidden path="task.version"/>
@@ -28,6 +28,18 @@
           <td>
             <form:input path="task.timerSchedule"/>
             <span class="error"><form:errors path="task.timerSchedule" /></span>
+          </td>
+        </tr>
+        <tr>
+          <td align="right">Script File:</td>
+          <td>
+            <input type="file" name="scriptfile" size="80"/>
+          </td>
+        </tr>
+        <tr>
+          <td align="right">DataSet:</td>
+          <td>
+            <input type="file" name="dataset" size="80"/>
           </td>
         </tr>
         <tr>

@@ -17,7 +17,8 @@
         <option value="${groupName}" <c:if test="${groupName == selectedGroupName}">selected</c:if>>${groupName}</option>
       </c:forEach>
     </select> |
-    <a href="task_edit.do?selectedGroupName=${selectedGroupName}">Create New Task</a> |
+    <a href="taskcreate.jsp">Create New Task</a> |
+ <!--    <a href="task_edit.do?selectedGroupName=${selectedGroupName}">Create New Task</a> | -->
     </p>
     <display:table name="${tasks}" id="task" class="outlined" requestURI="tasks.do" defaultsort="2">
       <display:column title="Name" class="${recentStatus[task.id]}" sortable="true">
