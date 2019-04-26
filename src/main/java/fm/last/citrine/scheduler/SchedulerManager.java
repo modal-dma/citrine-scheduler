@@ -19,6 +19,7 @@ import static fm.last.citrine.scheduler.SchedulerConstants.BEAN_FACTORY;
 import static fm.last.citrine.scheduler.SchedulerConstants.TASK_BEAN_NAME;
 import static fm.last.citrine.scheduler.SchedulerConstants.TASK_COMMAND;
 import static fm.last.citrine.scheduler.SchedulerConstants.TASK_ID;
+import static fm.last.citrine.scheduler.SchedulerConstants.TASK_WORKING_DIRECTORY;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -89,6 +90,7 @@ public class SchedulerManager implements BeanFactoryAware {
     JobDataMap jobDataMap = jobDetail.getJobDataMap();
     jobDataMap.put(TASK_ID, task.getId());
     jobDataMap.put(TASK_COMMAND, task.getCommand());
+    jobDataMap.put(TASK_WORKING_DIRECTORY, task.getWorkingDirectory());
     // put the name of the task to run and the factory to use to retrieve it into the map to be used
     // by TaskBean later
     jobDataMap.put(TASK_BEAN_NAME, task.getBeanName());

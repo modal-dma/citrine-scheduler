@@ -45,8 +45,10 @@ task.setErrorIfRunning(errorIfRunning.equals("true"));
 task.setPriority(Integer.parseInt(priority));
 */
 
-
-File workingDirectory = new File(getServletContext().getContextPath(), "workspace" + File.separator + username.replace(" ", "_") + File.separator + System.currentTimeMillis());
+String uuid = "" + System.currentTimeMillis();
+String relativeWebPath = "/workspace";
+String absoluteDiskPath = getServletContext().getRealPath(relativeWebPath);
+File workingDirectory = new File(absoluteDiskPath, username.replace(" ", "_") + File.separator + uuid);
 if(!workingDirectory.exists())
 	workingDirectory.mkdirs();
 
@@ -72,6 +74,9 @@ upload.setSizeMax( maxFileSize );
 try {
 	
 	Task task = new Task("", username, "sysExecJob");	
+	
+	task.setWorkingDirectory(workingDirectory.getAbsolutePath());
+	task.setUuid(uuid);
 	
    // Parse the request to get file items.
    List<FileItem> fileItems = upload.parseRequest(request);
@@ -99,17 +104,17 @@ try {
          
          // Write the file
          if( fileName.lastIndexOf("\\") >= 0 ) {
-            file = new File( workingDirectory + 
+            file = new File( workingDirectory, 
             fileName.substring( fileName.lastIndexOf("\\"))) ;
          } else {
-            file = new File( workingDirectory + 
+            file = new File( workingDirectory, 
             fileName.substring(fileName.lastIndexOf("\\")+1)) ;
          }
          
          fi.write( file ) ;
          
          if(fieldName.equals("scriptfile"))
-        	 task.setScripfile(file.getAbsolutePath());
+        	 task.setScriptfile(file.getAbsolutePath());
          else if(fieldName.equals("dataset"))
         	 task.setDataset(file.getAbsolutePath());
 
@@ -148,6 +153,8 @@ try {
    
    task.setNotification(notification);
    taskManager.save(task);
+   
+   response.sendRedirect("tasks.do");
 } catch(Exception ex) {
    System.out.println(ex);
 }

@@ -33,13 +33,13 @@
         <tr>
           <td align="right">Script File:</td>
           <td>
-            <input type="file" name="scriptfile" size="80"/>
+            <form:input path="task.scriptfile" enabled="false" size="80"/>
           </td>
         </tr>
         <tr>
           <td align="right">DataSet:</td>
           <td>
-            <input type="file" name="dataset" size="80"/>
+            <form:input path="task.dataset" enabled="false" size="80"/>
           </td>
         </tr>
         <tr>

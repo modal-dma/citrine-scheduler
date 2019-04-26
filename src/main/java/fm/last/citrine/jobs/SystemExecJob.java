@@ -19,7 +19,9 @@ import static fm.last.citrine.scheduler.SchedulerConstants.SYS_ERR;
 import static fm.last.citrine.scheduler.SchedulerConstants.SYS_OUT;
 import static fm.last.citrine.scheduler.SchedulerConstants.TASK_COMMAND;
 import static fm.last.citrine.scheduler.SchedulerConstants.TASK_RUN_ID;
+import static fm.last.citrine.scheduler.SchedulerConstants.TASK_WORKING_DIRECTORY;
 
+import java.io.File;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -59,7 +61,8 @@ public class SystemExecJob implements InterruptableJob {
     JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
     this.taskRunId = jobDataMap.getLong(TASK_RUN_ID);
     try {
-      execute(jobDataMap.getString(TASK_COMMAND));
+      execute(jobDataMap.getString(TASK_COMMAND), jobDataMap.getString(TASK_WORKING_DIRECTORY));
+      //execute(jobDataMap.getString(TASK_COMMAND));
     } catch (Exception e) {
       throw new JobExecutionException("Exception occurred running command", e);
     } finally {
@@ -80,14 +83,15 @@ public class SystemExecJob implements InterruptableJob {
    * @param commandString Command to execute.
    * @throws Exception If an error occurs running the command.
    */
-  public void execute(String commandString) throws Exception {
+  public void execute(String commandString, String workingDirectory) throws Exception {
     if (observer != null) {
       observer.setJobRunId(taskRunId);
       executor.setSysErrObserver((SysExecutorObserver) observer);
       executor.setSysOutObserver((SysExecutorObserver) observer);
     }
     List<String> command = SysCommandUtils.convertCommand(commandString);
-    log.info("Running " + command);
+    log.info("Running " + command);    
+    executor.setWorkingDirectory(new File(workingDirectory)); // working dir must exists
     executor.start(command);
     int exitStatus = executor.waitForProcess();
     log.info("Job finished with exit status " + exitStatus);

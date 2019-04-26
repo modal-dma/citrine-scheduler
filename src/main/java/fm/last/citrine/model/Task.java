@@ -59,10 +59,11 @@ public class Task {
   private String groupName;
   private String command;
   private String beanName;
-  private String scripfile;
+  private String scriptfile;
   private String dataset;
   private String workingDirectory;
-
+  private String uuid;
+  
   private boolean enabled = DEFAULT_ENABLED;
   private boolean stopOnError = DEFAULT_STOP_ON_ERROR;
   private boolean errorIfRunning = DEFAULT_ERROR_IF_RUNNING;
@@ -426,13 +427,13 @@ public class Task {
   }
 
   @Basic
-public String getScripfile() {
-	return scripfile;
+public String getScriptfile() {
+	return scriptfile;
 }
 
   @Basic
-  public void setScripfile(String scripfile) {
-		this.scripfile = scripfile;
+  public void setScriptfile(String scripfile) {
+		this.scriptfile = scripfile;
   }
   @Basic
   public String getDataset() {
@@ -450,6 +451,15 @@ public String getScripfile() {
 
 	public void setWorkingDirectory(String workingDirectory) {
 		this.workingDirectory = workingDirectory;
+	}
+
+	@Basic
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 //public String getDataset() {

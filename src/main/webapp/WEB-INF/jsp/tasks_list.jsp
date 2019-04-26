@@ -37,6 +37,7 @@
           </c:if>
         </c:if>
         <a href="tasks.do?action=reset&taskId=${task.id}&selectedGroupName=${selectedGroupName}">Reset</a>
+        <a href="download.jsp?taskId=${task.id}&selectedGroupName=${selectedGroupName}">Download</a>
       </display:column>
       <display:column title="last run" class="${recentStatus[task.id]}">
       	<c:out value="${lastRun[task.id]}"></c:out>
