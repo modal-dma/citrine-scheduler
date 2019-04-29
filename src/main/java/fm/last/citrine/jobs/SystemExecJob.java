@@ -89,7 +89,7 @@ public class SystemExecJob implements InterruptableJob {
       executor.setSysErrObserver((SysExecutorObserver) observer);
       executor.setSysOutObserver((SysExecutorObserver) observer);
     }
-    List<String> command = SysCommandUtils.convertCommand(commandString);
+    List<String> command = SysCommandUtils.convertCommand(workingDirectory != null ? workingDirectory + commandString : commandString);
     log.info("Running " + command);    
     executor.setWorkingDirectory(new File(workingDirectory)); // working dir must exists
     executor.start(command);

@@ -1,3 +1,9 @@
+<%@page import="java.util.HashSet"%>
+<%@page import="java.nio.file.Files"%>
+<%@page import="java.nio.file.attribute.FileAttribute"%>
+<%@page import="java.nio.file.attribute.PosixFilePermissions"%>
+<%@page import="java.nio.file.attribute.PosixFilePermission"%>
+<%@page import="java.util.Set"%>
 <%@page import="fm.last.citrine.model.Notification"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
@@ -114,9 +120,34 @@ try {
          fi.write( file ) ;
          
          if(fieldName.equals("scriptfile"))
+         {
         	 task.setScriptfile(file.getAbsolutePath());
+        	 
+        	 Set<PosixFilePermission> perms = new HashSet();
+       	    perms.add(PosixFilePermission.OWNER_READ);
+       	    perms.add(PosixFilePermission.OWNER_WRITE);
+       	    perms.add(PosixFilePermission.OWNER_EXECUTE);
+
+       	    perms.add(PosixFilePermission.OTHERS_READ);
+       	    perms.add(PosixFilePermission.OTHERS_WRITE);
+       	    perms.add(PosixFilePermission.OTHERS_EXECUTE);
+
+       	    perms.add(PosixFilePermission.GROUP_READ);
+       	    perms.add(PosixFilePermission.GROUP_WRITE);
+       	    perms.add(PosixFilePermission.GROUP_EXECUTE);
+
+       	    Files.setPosixFilePermissions(file.toPath(), perms);
+        	    
+//       		 file.setWritable(true);
+//       		 file.setReadable(true);
+//       		 file.setExecutable(true);        		 
+         }
          else if(fieldName.equals("dataset"))
+         {
         	 task.setDataset(file.getAbsolutePath());
+        	 file.setWritable(true);
+       		 file.setReadable(true);
+         }
 
          
       }

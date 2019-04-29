@@ -47,6 +47,8 @@ public class TaskRun {
   private String sysOut;
   private String sysErr;
   private String stackTrace;
+  private String pid;
+  
   private long taskId; // for now we are handling this manually rather than via a many-to-one relationship
 
   public TaskRun() {
@@ -158,6 +160,15 @@ public class TaskRun {
     this.stackTrace = stackTrace;
   }
 
+  @Basic
+  public String getPid() {
+		return pid;
+  }
+
+	public void setPid(String pid) {
+		this.pid = pid;
+  }
+	
   @Override
   public String toString() {
     return "Id=" + this.id + ", taskId=" + this.taskId + ", status=" + this.status + ", startdate=" + this.startDate
@@ -251,5 +262,7 @@ public class TaskRun {
     }
     return true;
   }
+
+
 
 }

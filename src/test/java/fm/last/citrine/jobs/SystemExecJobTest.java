@@ -51,7 +51,7 @@ public class SystemExecJobTest {
 
   @Test
   public void testExec() throws Exception {
-    execJob.execute("ls -al");
+    execJob.execute("ls -al", null);
     assertNotNull(execJob.getCommandOutput());
     assertNull(execJob.getCommandError());
   }
@@ -82,7 +82,7 @@ public class SystemExecJobTest {
     @Override
     public void run() {
       try {
-        job.execute(command);
+        job.execute(command, null);
       } catch (Exception e) {
         Assert.fail(e.getMessage());
       }

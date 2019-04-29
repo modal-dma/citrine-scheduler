@@ -17,6 +17,7 @@ package fm.last.syscommand;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -291,6 +292,25 @@ public class SysCommandExecutor {
    */
   public void setSysErrObserver(SysExecutorObserver sysErrObserver) {
     this.sysErrObserver = sysErrObserver;
+  }
+  
+  public int tryGetPid()
+  {
+      if (process.getClass().getName().equals("java.lang.UNIXProcess"))
+      {
+          try
+          {
+              Field f = process.getClass().getDeclaredField("pid");
+              f.setAccessible(true);
+              return f.getInt(process);
+          }
+          catch (Exception ex)
+          {
+        	  ex.printStackTrace();
+          }
+      }
+
+      return 0;
   }
 
 }
