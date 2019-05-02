@@ -20,6 +20,8 @@ import static fm.last.citrine.scheduler.SchedulerConstants.TASK_BEAN_NAME;
 import static fm.last.citrine.scheduler.SchedulerConstants.TASK_COMMAND;
 import static fm.last.citrine.scheduler.SchedulerConstants.TASK_ID;
 import static fm.last.citrine.scheduler.SchedulerConstants.TASK_WORKING_DIRECTORY;
+import static fm.last.citrine.scheduler.SchedulerConstants.TASK_CORES;
+import static fm.last.citrine.scheduler.SchedulerConstants.TASK_RAM;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -93,6 +95,9 @@ public class SchedulerManager implements BeanFactoryAware, TriggerListener {
     jobDataMap.put(TASK_ID, task.getId());
     jobDataMap.put(TASK_COMMAND, task.getCommand());
     jobDataMap.put(TASK_WORKING_DIRECTORY, task.getWorkingDirectory());
+    jobDataMap.put(TASK_RAM, task.getRam());
+    jobDataMap.put(TASK_CORES, task.getCores());
+    
     // put the name of the task to run and the factory to use to retrieve it into the map to be used
     // by TaskBean later
     jobDataMap.put(TASK_BEAN_NAME, task.getBeanName());
@@ -123,7 +128,7 @@ public class SchedulerManager implements BeanFactoryAware, TriggerListener {
     JobDetail jobDetail = createJobDetail(task);
     // modify group name otherwise this has potential to clash with other scheduled run of this job
     jobDetail.setGroup(jobDetail.getGroup() + SUFFIX_IMMEDIATE);
-    Trigger trigger = TriggerUtils.makeImmediateTrigger(String.valueOf(task.getId()), 0, 1);
+    Trigger trigger = TriggerUtils.makeImmediateTrigger(String.valueOf(task.getId()), 0, 20000);
     log.info("Scheduling task with id " + task.getId() + " to run now");
     try {
       scheduler.scheduleJob(jobDetail, trigger);
@@ -146,15 +151,17 @@ public class SchedulerManager implements BeanFactoryAware, TriggerListener {
       if (task.isEnabled() && !StringUtils.isEmpty(task.getTimerSchedule())) {
         JobDetail jobDetail = createJobDetail(task);
         log.info("Scheduling task with id " + task.getId() + " and schedule: " + task.getTimerSchedule());
-        CronTrigger cronTrigger = new CronTrigger(String.valueOf(task.getId()), Scheduler.DEFAULT_GROUP,
-            task.getTimerSchedule());
-        scheduler.scheduleJob(jobDetail, cronTrigger);
+        Trigger trigger = TriggerUtils.makeImmediateTrigger(String.valueOf(task.getId()), 0, 1);
+        //CronTrigger cronTrigger = new CronTrigger(String.valueOf(task.getId()), Scheduler.DEFAULT_GROUP,
+//            task.getTimerSchedule());
+        scheduler.scheduleJob(jobDetail, trigger);
       }
     } catch (SchedulerException e) {
       throw new ScheduleException("Error scheduling task with id " + task.getId(), e);
-    } catch (ParseException e) {
-      throw new ScheduleException("Error scheduling task with id " + task.getId(), e);
-    }
+    } 
+//    catch (ParseException e) {
+//      throw new ScheduleException("Error scheduling task with id " + task.getId(), e);
+//    }
   }
 
   /**

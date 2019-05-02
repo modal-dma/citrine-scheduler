@@ -23,13 +23,14 @@
             <form:textarea path="task.description" rows="5" cols="80"/>
           </td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td align="right">Timer Schedule<span class="reference"><a href="http://quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger" target="_blank">[?]</a></span>:</td>
           <td>
             <form:input path="task.timerSchedule"/>
             <span class="error"><form:errors path="task.timerSchedule" /></span>
           </td>
         </tr>
+         -->
         <tr>
           <td align="right">Script File:</td>
           <td>
@@ -48,6 +49,7 @@
             <form:input path="task.command" size="80"/>
           </td>
         </tr>
+        <!-- 
         <tr>
           <td align="right">Bean name:</td>
           <td>
@@ -56,13 +58,7 @@
             </form:select>
           </td>
         </tr>
-        <tr>
-          <td align="right">Priority:</td>
-          <td>
-            <form:input path="task.priority"/>
-            <span class="error"><form:errors path="task.priority" /></span>
-          </td>
-        </tr>
+         -->        
         <tr>
           <td align="right">* Group Name:</td>
           <td>
@@ -110,9 +106,11 @@
         <tr>
           <td/>
           <td align="right">
+          <!-- 
             <c:if test="${not empty taskDTO.task.id && taskDTO.task.id != 0}">
               <a href="task_children.do?taskId=${taskDTO.task.id}&selectedGroupName=${selectedGroupName}">Manage child tasks</a>
             </c:if>
+             -->
           </td>
         </tr>
         <tr>

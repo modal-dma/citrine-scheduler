@@ -102,53 +102,55 @@ try {
       {
          // Get the uploaded file parameters
          
-         String fileName = fi.getName();
+         String fileName = fi.getName().trim();;
          boolean isInMemory = fi.isInMemory();
          long sizeInBytes = fi.getSize();
       
          File file;
          
-         // Write the file
-         if( fileName.lastIndexOf("\\") >= 0 ) {
-            file = new File( workingDirectory, 
-            fileName.substring( fileName.lastIndexOf("\\"))) ;
-         } else {
-            file = new File( workingDirectory, 
-            fileName.substring(fileName.lastIndexOf("\\")+1)) ;
-         }
-         
-         fi.write( file ) ;
-         
-         if(fieldName.equals("scriptfile"))
+         if(!fileName.isEmpty())
          {
-        	 task.setScriptfile(file.getAbsolutePath());
-        	 
-        	 Set<PosixFilePermission> perms = new HashSet();
-       	    perms.add(PosixFilePermission.OWNER_READ);
-       	    perms.add(PosixFilePermission.OWNER_WRITE);
-       	    perms.add(PosixFilePermission.OWNER_EXECUTE);
-
-       	    perms.add(PosixFilePermission.OTHERS_READ);
-       	    perms.add(PosixFilePermission.OTHERS_WRITE);
-       	    perms.add(PosixFilePermission.OTHERS_EXECUTE);
-
-       	    perms.add(PosixFilePermission.GROUP_READ);
-       	    perms.add(PosixFilePermission.GROUP_WRITE);
-       	    perms.add(PosixFilePermission.GROUP_EXECUTE);
-
-       	    Files.setPosixFilePermissions(file.toPath(), perms);
-        	    
-//       		 file.setWritable(true);
-//       		 file.setReadable(true);
-//       		 file.setExecutable(true);        		 
+	         // Write the file
+	         if( fileName.lastIndexOf("\\") >= 0 ) {
+	            file = new File( workingDirectory, 
+	            fileName.substring( fileName.lastIndexOf("\\"))) ;
+	         } else {
+	            file = new File( workingDirectory, 
+	            fileName.substring(fileName.lastIndexOf("\\")+1)) ;
+	         }
+	         
+	         fi.write( file ) ;
+	         
+	         if(fieldName.equals("scriptfile"))
+	         {
+	        	 task.setScriptfile(file.getAbsolutePath());
+	        	 
+	        	 Set<PosixFilePermission> perms = new HashSet();
+	       	    perms.add(PosixFilePermission.OWNER_READ);
+	       	    perms.add(PosixFilePermission.OWNER_WRITE);
+	       	    perms.add(PosixFilePermission.OWNER_EXECUTE);
+	
+	       	    perms.add(PosixFilePermission.OTHERS_READ);
+	       	    perms.add(PosixFilePermission.OTHERS_WRITE);
+	       	    perms.add(PosixFilePermission.OTHERS_EXECUTE);
+	
+	       	    perms.add(PosixFilePermission.GROUP_READ);
+	       	    perms.add(PosixFilePermission.GROUP_WRITE);
+	       	    perms.add(PosixFilePermission.GROUP_EXECUTE);
+	
+	       	    Files.setPosixFilePermissions(file.toPath(), perms);
+	        	    
+	//       		 file.setWritable(true);
+	//       		 file.setReadable(true);
+	//       		 file.setExecutable(true);        		 
+	         }
+	         else if(fieldName.equals("dataset"))
+	         {
+	        	 task.setDataset(file.getAbsolutePath());
+	        	 file.setWritable(true);
+	       		 file.setReadable(true);
+	         }
          }
-         else if(fieldName.equals("dataset"))
-         {
-        	 task.setDataset(file.getAbsolutePath());
-        	 file.setWritable(true);
-       		 file.setReadable(true);
-         }
-
          
       }
       else
@@ -165,7 +167,7 @@ try {
     		  task.setTimerSchedule(value);
     	  else if(fieldName.equals("command"))
     		  task.setCommand(value);
-    	  else if(fieldName.equals("timerSchedule"))
+    	  else if(fieldName.equals("schedule"))
     		  task.setTimerSchedule(value);
     	  else if(fieldName.equals("enabled"))
     		  task.setEnabled(value.equals("true"));

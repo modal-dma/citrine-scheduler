@@ -59,21 +59,23 @@ public class SystemExecJob implements InterruptableJob {
   @Override
   public void execute(JobExecutionContext context) throws JobExecutionException {
     JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
+    
+    // TODO verify availability of resources
+    
     this.taskRunId = jobDataMap.getLong(TASK_RUN_ID);
     try {
       execute(jobDataMap.getString(TASK_COMMAND), jobDataMap.getString(TASK_WORKING_DIRECTORY));
       //execute(jobDataMap.getString(TASK_COMMAND));
     } catch (Exception e) {
-      throw new JobExecutionException("Exception occurred running command", e);
+    	JobExecutionException e2 = new JobExecutionException("Exception occurred running command", e);
+    	//fire it again
+    	e2.setRefireImmediately(true);
+    	throw e2;
     } finally {
       jobDataMap.put(SYS_OUT, commandOutput);
       jobDataMap.put(SYS_ERR, commandError);
     }
     
-//    JobExecutionException e2 = new JobExecutionException(e);
-//    //fire it again
-//    e2.setRefireImmediately(true);
-//    throw e2;
     
   }
 
@@ -95,7 +97,8 @@ public class SystemExecJob implements InterruptableJob {
       executor.setSysErrObserver((SysExecutorObserver) observer);
       executor.setSysOutObserver((SysExecutorObserver) observer);
     }
-    List<String> command = SysCommandUtils.convertCommand(workingDirectory != null ? workingDirectory + commandString : commandString);
+    //List<String> command = SysCommandUtils.convertCommand(workingDirectory != null ? workingDirectory + commandString : commandString);
+    List<String> command = SysCommandUtils.convertCommand(commandString);
     log.info("Running " + command);    
     executor.setWorkingDirectory(new File(workingDirectory)); // working dir must exists
     executor.start(command);

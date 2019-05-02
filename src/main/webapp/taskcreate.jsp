@@ -33,10 +33,12 @@
           </td>
         </tr>
         <tr>
-          <td align="right">Timer Schedule<span class="reference"><a href="http://quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger" target="_blank">[?]</a></span>:</td>
+          <td align="right">Schedule:</td>
           <td>
-            <input name="timerSchedule"/>
-            <span class="error"><form:errors name="timerSchedule.error" /></span>
+            <select name="timerSchedule">
+			  <option value="1">Prima Possibile</option>
+			  <option value="2">Attendi la coda</option>			  
+			</select>           
           </td>
         </tr>
         <tr>
@@ -56,14 +58,7 @@
           <td>
             <input name="command" size="80"/>
           </td>
-        </tr>
-        <tr>
-          <td align="right">Priority:</td>
-          <td>
-            <input name="priority"/>
-            <span class="error"><form:errors path="priority.error" /></span>
-          </td>
-        </tr>
+        </tr>        
         <tr>
           <td align="right">Enabled:</td>
           <td>

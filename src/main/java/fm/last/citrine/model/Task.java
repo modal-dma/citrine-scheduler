@@ -96,9 +96,24 @@ public class Task {
   }
 
   public Task() {
-    this(null);
+    
   }
 
+  public Task(Task task) {
+	    this(task.name, task.groupName, task.beanName, task.enabled, task.stopOnError, task.command, task.timerSchedule);
+	    setNotification(task.notification);
+	    setScriptfile(task.scriptfile);
+	    setDataset(task.dataset);
+	    setWorkingDirectory(task.workingDirectory);
+	    setUuid(task.uuid);
+	    setRam(task.ram);
+	    setCores(task.cores);
+	    setErrorIfRunning(task.errorIfRunning);
+	    setDescription(task.getDescription());
+	    setId(task.getId());
+	    setVersion(task.getVersion());
+	    
+	  }
   @Transient
   public Set<Long> getParentTaskIds(boolean recursive) {
     Set<Long> parentIds = new HashSet<Long>();

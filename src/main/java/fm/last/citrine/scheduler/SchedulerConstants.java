@@ -23,6 +23,8 @@ public interface SchedulerConstants {
   public final String TASK_ID = "taskid";
   public final String TASK_COMMAND = "command";
   public final String TASK_RUN_ID = "taskrunid";
+  public final String TASK_RAM = "taskram";
+  public final String TASK_CORES = "taskcores";
   public final String JOB_BEAN = "jobbean";
   public final String TASK_BEAN_NAME = "taskbeanname";
   public final String TASK_WORKING_DIRECTORY = "workingdir";

@@ -17,6 +17,7 @@ package fm.last.citrine.web;
 
 import static fm.last.citrine.web.Constants.PARAM_TASK_ID;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import fm.last.citrine.model.Status;
 import fm.last.citrine.model.Task;
+import fm.last.citrine.model.TaskExtended;
 import fm.last.citrine.model.TaskRun;
 import fm.last.citrine.scheduler.SchedulerManager;
 import fm.last.citrine.service.TaskManager;
@@ -100,6 +102,8 @@ public class TaskController extends MultiActionController {
   private void processTasks(List<Task> tasks, Map<String, Object> model) {
     Map<Long, String> taskRunStatus = new HashMap<Long, String>();
     Map<Long, String> lastRun = new HashMap<Long, String>();
+    ArrayList<TaskExtended> tasksExtended = new ArrayList<TaskExtended>();
+    
     for (Task task : tasks) {
 
       // limit the description text based in the gui (we could also do this via displaytag)
@@ -110,7 +114,7 @@ public class TaskController extends MultiActionController {
           task.setDescription(description.substring(0, periodIndex));
         }
       }
-
+         
       // get the most recent status for each task
       TaskRun mostRecentTaskRun = taskRunManager.getMostRecent(task.getId());
       if (task.isEnabled()) {
@@ -123,10 +127,17 @@ public class TaskController extends MultiActionController {
         taskRunStatus.put(task.getId(), TASK_STATUS_DISABLED);
       }
       lastRun.put(task.getId(), periodFormatter.printLastRun(mostRecentTaskRun));
+      
+      TaskExtended taskExtended = new TaskExtended(task, mostRecentTaskRun.getStatus());
+      tasksExtended.add(taskExtended);
+      
     }
     model.put("lastRun", lastRun);
     model.put("recentStatus", taskRunStatus);
     model.put("tasks", tasks);
+    model.put("tasksExtended", tasksExtended);
+    model.put("currentUser", taskManager.getUserManager().getCurrentUser().getUsername());
+    model.put("currentUserRole", taskManager.getUserManager().getCurrentUser().getRole());
   }
 
   /**
