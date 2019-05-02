@@ -97,5 +97,7 @@ public interface TaskManager {
    * @return All group names.
    */
   public Set<String> getGroupNames();
+  
+  public UserManager getUserManager();
 
 }

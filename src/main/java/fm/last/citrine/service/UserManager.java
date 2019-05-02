@@ -40,11 +40,20 @@ public interface UserManager {
   public void save(User user);
 
   /**
-   * Retrieves all Task in storage.
+   * Retrieves all Users.
    * 
-   * @return List of all Tasks in storage.
+   * @return List of all Users in storage.
    */
   public List<User> getUsers();
+  
+  /**
+   * Retrieves the current user.
+   * 
+   * @return the current user.
+   */
+  public User getCurrentUser();
+  
+  public void setCurrentUser(User user);
 
   /**
    * Retrieves all Task belonging to the same group.
@@ -54,6 +63,7 @@ public interface UserManager {
    */
   public List<User> findByUsername(String username);
 
+  
   /**
    * Deletes a Task.
    * 

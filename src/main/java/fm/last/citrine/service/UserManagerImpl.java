@@ -32,7 +32,8 @@ import fm.last.citrine.model.User;
 public class UserManagerImpl implements UserManager, BeanFactoryAware {
 
   private UserDAO userDAO;
-
+  private User currentUser;
+  
 
 	public UserManagerImpl() {
 	}
@@ -101,5 +102,18 @@ public class UserManagerImpl implements UserManager, BeanFactoryAware {
     // schedulerManager, and we need it set on schedulerManager during init-method, set set it now
     //schedulerManager.setBeanFactory(beanFactory);
   }
+
+
+	@Override
+	public User getCurrentUser() {
+		
+		return currentUser;
+	}
+	
+	
+	@Override
+	public void setCurrentUser(User user) {
+		currentUser = user;
+	}
 
 }

@@ -28,8 +28,9 @@ else
 	}
 	else
 	{
+		userManager.setCurrentUser(user);
 		getServletContext().setAttribute("username", username);
-		response.sendRedirect("main.jsp");
+		response.sendRedirect("main.jsp");		
 	}	
 }
 

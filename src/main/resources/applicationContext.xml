@@ -127,6 +127,7 @@
     <constructor-arg index="0" ref="taskDAO" />
     <constructor-arg index="1" ref="schedulerManager" />
     <property name="taskRunDAO" ref="taskRunDAO" />
+    <property name="userManager" ref="userManager" />
   </bean>
 
   <bean id="taskRunManager" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">

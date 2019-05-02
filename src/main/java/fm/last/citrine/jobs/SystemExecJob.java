@@ -69,6 +69,12 @@ public class SystemExecJob implements InterruptableJob {
       jobDataMap.put(SYS_OUT, commandOutput);
       jobDataMap.put(SYS_ERR, commandError);
     }
+    
+//    JobExecutionException e2 = new JobExecutionException(e);
+//    //fire it again
+//    e2.setRefireImmediately(true);
+//    throw e2;
+    
   }
 
   @Override

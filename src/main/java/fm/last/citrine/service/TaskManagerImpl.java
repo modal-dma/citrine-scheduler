@@ -38,6 +38,7 @@ public class TaskManagerImpl implements TaskManager, BeanFactoryAware {
   private final SchedulerManager schedulerManager;
   private final TaskDAO taskDAO;
   private TaskRunDAO taskRunDAO;
+  private UserManager userManager;
 
   public TaskManagerImpl(TaskDAO taskDAO, SchedulerManager schedulerManager) throws SchedulerException, ParseException {
     this.schedulerManager = schedulerManager;
@@ -145,5 +146,16 @@ public class TaskManagerImpl implements TaskManager, BeanFactoryAware {
     // schedulerManager, and we need it set on schedulerManager during init-method, set set it now
     schedulerManager.setBeanFactory(beanFactory);
   }
+
+  	@Override
+  	public UserManager getUserManager() {
+		return userManager;
+	}
+
+	public void setUserManager(UserManager userManager) {
+		this.userManager = userManager;
+	}
+	
+
 
 }

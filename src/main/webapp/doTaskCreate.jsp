@@ -178,7 +178,11 @@ try {
     	  else if(fieldName.equals("notifyOnFailure"))
     		  notification.setNotifyOnFailure(value.equals("true"));
     	  else if(fieldName.equals("notification.recipients"))
-    		  notification.setRecipients(value);    	      	  
+    		  notification.setRecipients(value);    	      	
+    	  else if(fieldName.equals("ram"))    	
+    		  task.setRam(Integer.parseInt(value));
+    	  else if(fieldName.equals("cores"))    	
+    		  task.setCores(Integer.parseInt(value));
       }            
    }
    

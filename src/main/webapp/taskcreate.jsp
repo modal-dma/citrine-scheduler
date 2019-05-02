@@ -21,6 +21,18 @@
           </td>
         </tr>
         <tr>
+          <td align="right" valign="top">Needed RAM (GB):</td>
+          <td>
+            <input type="text" name="ram" rows="5" cols="10"/>
+          </td>
+        </tr>
+        <tr>
+          <td align="right" valign="top">Number of needed cores:</td>
+          <td>
+            <input type="text" name="cores" rows="5" cols="5"/>
+          </td>
+        </tr>
+        <tr>
           <td align="right">Timer Schedule<span class="reference"><a href="http://quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger" target="_blank">[?]</a></span>:</td>
           <td>
             <input name="timerSchedule"/>

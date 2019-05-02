@@ -38,6 +38,7 @@ import fm.last.citrine.model.TaskRun;
 import fm.last.citrine.scheduler.SchedulerManager;
 import fm.last.citrine.service.TaskManager;
 import fm.last.citrine.service.TaskRunManager;
+import fm.last.citrine.service.UserManager;
 
 /**
  * Controller that handles listing and running of Tasks.
@@ -203,5 +204,4 @@ public class TaskController extends MultiActionController {
   public void setTaskRunManager(TaskRunManager jobRunManager) {
     this.taskRunManager = jobRunManager;
   }
-
 }

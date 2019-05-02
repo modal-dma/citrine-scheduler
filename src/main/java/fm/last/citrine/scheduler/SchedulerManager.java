@@ -46,7 +46,7 @@ import fm.last.citrine.model.Task;
 /**
  * Manager class that is responsible for handling scheduling of Tasks.
  */
-public class SchedulerManager implements BeanFactoryAware {
+public class SchedulerManager implements BeanFactoryAware, TriggerListener {
 
   private static Logger log = Logger.getLogger(SchedulerManager.class);
 
@@ -66,6 +66,8 @@ public class SchedulerManager implements BeanFactoryAware {
     try {
       this.scheduler = scheduler;
       jobClass = (Class<Task>) Class.forName(jobClassName);
+      setTriggerListener(this);
+      
       log.info("Starting scheduler...");
       scheduler.start();
       log.info("Scheduler started");
@@ -271,5 +273,34 @@ public class SchedulerManager implements BeanFactoryAware {
   public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
     this.beanFactory = beanFactory;
   }
+
+	@Override
+	public String getName() {		
+		return "Main";
+	}
+	
+	@Override
+	public void triggerComplete(Trigger trigger, JobExecutionContext context, int triggerInstructionCode) {
+		log.info("triggerComplete " + trigger.getName());
+		
+	}
+	
+	@Override
+	public void triggerFired(Trigger trigger, JobExecutionContext context) {
+		log.info("triggerFired " + trigger.getName());
+		
+	}
+	
+	@Override
+	public void triggerMisfired(Trigger trigger) {
+		log.info("triggerMisfired " + trigger.getName());
+		
+	}
+	
+	@Override
+	public boolean vetoJobExecution(Trigger trigger, JobExecutionContext context) {
+		log.info("vetoJobExecution " + trigger.getName());
+		return false;
+	}
 
 }

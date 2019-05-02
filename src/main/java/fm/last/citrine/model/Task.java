@@ -63,6 +63,8 @@ public class Task {
   private String dataset;
   private String workingDirectory;
   private String uuid;
+  private int ram;
+  private int cores;
   
   private boolean enabled = DEFAULT_ENABLED;
   private boolean stopOnError = DEFAULT_STOP_ON_ERROR;
@@ -460,6 +462,24 @@ public String getScriptfile() {
 
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
+	}
+
+	@Basic
+	public int getRam() {
+		return ram;
+	}
+
+	public void setRam(int ram) {
+		this.ram = ram;
+	}
+
+	@Basic
+	public int getCores() {
+		return cores;
+	}
+
+	public void setCores(int core) {
+		this.cores = core;
 	}
 
 //public String getDataset() {
