@@ -30,7 +30,10 @@ else
 	{
 		userManager.setCurrentUser(user);
 		getServletContext().setAttribute("username", username);
-		response.sendRedirect("main.jsp");		
+		if(user.getRole().equals("admin"))
+			response.sendRedirect("main.jsp");
+		else
+			response.sendRedirect("tasks.do");
 	}	
 }
 

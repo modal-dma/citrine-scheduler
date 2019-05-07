@@ -22,6 +22,7 @@ import static fm.last.citrine.scheduler.SchedulerConstants.TASK_RUN_ID;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -62,7 +63,19 @@ public class TaskRunManagerImpl implements TaskRunManager {
   private Map<Long, JobExecutionContext> runningTasks = Collections
       .synchronizedMap(new HashMap<Long, JobExecutionContext>());
 
-  private SchedulerManager schedulerManager;
+  public List<JobExecutionContext> getRunningTasks() {
+	  
+	  ArrayList<JobExecutionContext> tasks = new ArrayList<JobExecutionContext>();
+	  
+	  for(JobExecutionContext ctx : runningTasks.values())
+	  {
+		  tasks.add(ctx);
+	  }
+	
+	  return tasks;
+}
+
+private SchedulerManager schedulerManager;
 
   private TaskManager taskManager;
 
@@ -154,6 +167,24 @@ public class TaskRunManagerImpl implements TaskRunManager {
   }
 
   @Override
+  public long getPid(long taskId) {
+    if(runningTasks.containsKey(taskId))
+    {
+    	JobExecutionContext context = runningTasks.get(taskId);
+    	    	
+    	long taskRunId = context.getJobDetail().getJobDataMap().getLong(TASK_RUN_ID);
+        TaskRun taskRun = get(taskRunId);
+        
+        return taskRun.getPid();        
+    }
+    else
+    {
+    	return -1;
+    }
+  }
+
+  
+  @Override
   public boolean stop(long taskRunId) {
     TaskRun taskRun = taskRunDAO.get(taskRunId);
     long taskId = taskRun.getTaskId();
@@ -208,6 +239,9 @@ public class TaskRunManagerImpl implements TaskRunManager {
     JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
     long taskId = jobDataMap.getLong(TASK_ID);
     TaskRun taskRun = new TaskRun(new Date(), null, null, null, null, taskId);
+    if(jobDataMap.containsKey("pid"))
+    	taskRun.setPid((Long)jobDataMap.get("pid"));
+    
     setStatus(taskRun, Status.RUNNING);
     save(taskRun); // saving it will get the task run an id
     jobDataMap.put(TASK_RUN_ID, taskRun.getId());

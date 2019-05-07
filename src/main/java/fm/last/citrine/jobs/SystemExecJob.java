@@ -20,8 +20,12 @@ import static fm.last.citrine.scheduler.SchedulerConstants.SYS_OUT;
 import static fm.last.citrine.scheduler.SchedulerConstants.TASK_COMMAND;
 import static fm.last.citrine.scheduler.SchedulerConstants.TASK_RUN_ID;
 import static fm.last.citrine.scheduler.SchedulerConstants.TASK_WORKING_DIRECTORY;
+import static fm.last.citrine.scheduler.SchedulerConstants.TASK_RAM;
+import static fm.last.citrine.scheduler.SchedulerConstants.TASK_CORES;
+
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -35,6 +39,8 @@ import fm.last.citrine.jobs.syscommand.RollingFileExecutorObserver;
 import fm.last.syscommand.SysCommandExecutor;
 import fm.last.syscommand.SysCommandUtils;
 import fm.last.syscommand.SysExecutorObserver;
+import fm.last.util.SystemUtil;
+import fm.last.util.SystemUtil.SystemUsage;
 
 /**
  * Citrine job that runs "System Exec" commands (i.e. using a command shell).
@@ -53,6 +59,8 @@ public class SystemExecJob implements InterruptableJob {
 
   private long taskRunId = -1;
 
+  private static final int CORE_NUM = 16;
+  
   public SystemExecJob() {
   }
 
@@ -61,10 +69,46 @@ public class SystemExecJob implements InterruptableJob {
     JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
     
     // TODO verify availability of resources
+    SystemUsage systemUsage = SystemUtil.getSystemUsage();
+    
+    if(systemUsage.cpuPercentage > 80)
+    {
+    	JobExecutionException e2 = new JobExecutionException("Not enough resources available");
+    	//fire it again
+    	e2.setRefireImmediately(true);
+    	throw e2;
+    }
+    	
+    if(systemUsage.ramPercentage > 70)
+    {
+    	JobExecutionException e2 = new JobExecutionException("Not enough resources available");
+    	//fire it again
+    	e2.setRefireImmediately(true);
+    	throw e2;
+    }
+    
+    int neededRam = jobDataMap.getInt(TASK_RAM);
+    if(systemUsage.ramFree / (1024 * 1024) < neededRam)
+    {
+    	JobExecutionException e2 = new JobExecutionException("Not enough RAM available");
+    	//fire it again
+    	e2.setRefireImmediately(true);
+    	throw e2;
+    }
+
+    int neededCores = jobDataMap.getInt(TASK_CORES);
+    if(systemUsage.totalCPUPercentage / 100 * CORE_NUM < neededCores)
+    {
+    	JobExecutionException e2 = new JobExecutionException("Not enough CORE available");
+    	//fire it again
+    	e2.setRefireImmediately(true);
+    	throw e2;
+    }
+
     
     this.taskRunId = jobDataMap.getLong(TASK_RUN_ID);
     try {
-      execute(jobDataMap.getString(TASK_COMMAND), jobDataMap.getString(TASK_WORKING_DIRECTORY));
+      execute(jobDataMap.getString(TASK_COMMAND), jobDataMap.getString(TASK_WORKING_DIRECTORY), jobDataMap);
       //execute(jobDataMap.getString(TASK_COMMAND));
     } catch (Exception e) {
     	JobExecutionException e2 = new JobExecutionException("Exception occurred running command", e);
@@ -91,7 +135,7 @@ public class SystemExecJob implements InterruptableJob {
    * @param commandString Command to execute.
    * @throws Exception If an error occurs running the command.
    */
-  public void execute(String commandString, String workingDirectory) throws Exception {
+  public void execute(String commandString, String workingDirectory, JobDataMap jobDataMap) throws Exception {
     if (observer != null) {
       observer.setJobRunId(taskRunId);
       executor.setSysErrObserver((SysExecutorObserver) observer);
@@ -101,7 +145,10 @@ public class SystemExecJob implements InterruptableJob {
     List<String> command = SysCommandUtils.convertCommand(commandString);
     log.info("Running " + command);    
     executor.setWorkingDirectory(new File(workingDirectory)); // working dir must exists
-    executor.start(command);
+    Process p = executor.start(command);
+    long pid = getPidOfProcess(p);
+    jobDataMap.put("pid", pid);
+    
     int exitStatus = executor.waitForProcess();
     log.info("Job finished with exit status " + exitStatus);
     if (observer != null) {
@@ -144,4 +191,28 @@ public class SystemExecJob implements InterruptableJob {
     return commandError;
   }
 
+  public static synchronized long getPidOfProcess(Process p) {
+	    long pid = -1;
+
+	    try {
+	    	Field f = p.getClass().getDeclaredField("pid");
+	      if (f != null) {	        
+	        f.setAccessible(true);
+	        pid = f.getLong(p);
+	        f.setAccessible(false);
+	      }
+	    } catch (Exception e) {
+	      pid = -1;
+	    }
+	    return pid;
+	  }
+  
+  public static class NotEnoughResourcesException extends JobExecutionException
+  {
+	  public NotEnoughResourcesException(String message)
+	  {
+		  super(message);
+		  setRefireImmediately(true);
+	  }
+  }
 }

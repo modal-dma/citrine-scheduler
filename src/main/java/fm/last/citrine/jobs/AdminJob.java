@@ -20,6 +20,8 @@ import static fm.last.citrine.scheduler.SchedulerConstants.SYS_OUT;
 import static fm.last.citrine.scheduler.SchedulerConstants.TASK_COMMAND;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -29,6 +31,7 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import fm.last.citrine.model.TaskRun;
 import fm.last.citrine.service.LogFileManager;
 import fm.last.citrine.service.TaskRunManager;
 
@@ -40,7 +43,8 @@ public class AdminJob implements Job {
   private static Logger log = Logger.getLogger(AdminJob.class);
 
   public static final String COMMAND_CLEAR_TASK_RUNS = "clear_task_runs";
-  public static final String COMMAND_CLEAR_LOG_FILES = "clear_log_files";
+  public static final String COMMAND_CLEAR_LOG_FILES = "clear_log_files";  
+  public static final String COMMAND_CHECK_JOB_RESOURCES = "check_job_resources";
 
   private TaskRunManager taskRunManager;
   private LogFileManager logFileManager;
@@ -73,7 +77,20 @@ public class AdminJob implements Job {
         log.error("Error deleting log files", e);
         jobDataMap.put(SYS_ERR, "Error deleting log files " + e.getMessage());
       }
-    } else {
+    } else if (COMMAND_CHECK_JOB_RESOURCES.equals(commandType)) {
+        
+    	List<JobExecutionContext> runningTasks = 
+    			taskRunManager.getRunningTasks();
+    	
+    	for(JobExecutionContext ctx : runningTasks)
+    	{
+    		Long pid = (Long)ctx.getJobDetail().getJobDataMap().get("pid");
+    		if (pid != null)
+    		{
+    			
+    		}    		
+    	}
+     } else {
       throw new JobExecutionException("Invalid command type '" + commandType + "'");
     }
   }

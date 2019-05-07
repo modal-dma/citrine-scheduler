@@ -128,8 +128,16 @@ public class TaskController extends MultiActionController {
       }
       lastRun.put(task.getId(), periodFormatter.printLastRun(mostRecentTaskRun));
       
-      TaskExtended taskExtended = new TaskExtended(task, mostRecentTaskRun.getStatus());
-      tasksExtended.add(taskExtended);
+      if(mostRecentTaskRun != null)
+      {
+	      TaskExtended taskExtended = new TaskExtended(task, mostRecentTaskRun.getStatus());
+	      tasksExtended.add(taskExtended);
+      }
+      else
+      {
+    	  TaskExtended taskExtended = new TaskExtended(task, Status.UNKNOWN);
+	      tasksExtended.add(taskExtended);
+      }
       
     }
     model.put("lastRun", lastRun);

@@ -151,17 +151,20 @@ public class SchedulerManager implements BeanFactoryAware, TriggerListener {
       if (task.isEnabled() && !StringUtils.isEmpty(task.getTimerSchedule())) {
         JobDetail jobDetail = createJobDetail(task);
         log.info("Scheduling task with id " + task.getId() + " and schedule: " + task.getTimerSchedule());
-        Trigger trigger = TriggerUtils.makeImmediateTrigger(String.valueOf(task.getId()), 0, 1);
-        //CronTrigger cronTrigger = new CronTrigger(String.valueOf(task.getId()), Scheduler.DEFAULT_GROUP,
-//            task.getTimerSchedule());
+        Trigger trigger;
+        if(task.getTimerSchedule() == null || !task.getTimerSchedule().equals(""))        	
+        	trigger = TriggerUtils.makeImmediateTrigger(String.valueOf(task.getId()), 0, 1);
+        else
+        	trigger = new CronTrigger(String.valueOf(task.getId()), Scheduler.DEFAULT_GROUP, task.getTimerSchedule());
+        
         scheduler.scheduleJob(jobDetail, trigger);
       }
     } catch (SchedulerException e) {
       throw new ScheduleException("Error scheduling task with id " + task.getId(), e);
     } 
-//    catch (ParseException e) {
-//      throw new ScheduleException("Error scheduling task with id " + task.getId(), e);
-//    }
+    catch (ParseException e) {
+      throw new ScheduleException("Error scheduling task with id " + task.getId(), e);
+    }
   }
 
   /**

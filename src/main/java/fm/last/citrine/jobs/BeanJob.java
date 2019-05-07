@@ -27,6 +27,11 @@ import org.quartz.JobExecutionException;
 import org.quartz.UnableToInterruptJobException;
 import org.springframework.beans.factory.BeanFactory;
 
+import fm.last.citrine.jobs.SystemExecJob.NotEnoughResourcesException;
+import fm.last.citrine.model.Task;
+import fm.last.citrine.service.TaskManager;
+import fm.last.citrine.service.TaskRunManager;
+
 /**
  * Simple Job wrapper that retrieves the name of the job to run and runs it using values stored in the job context.
  */
@@ -35,6 +40,8 @@ public class BeanJob implements InterruptableJob {
   private static Logger log = Logger.getLogger(BeanJob.class);
   private org.quartz.Job jobBean;
 
+  private TaskRunManager taskRunManager;
+  
   @Override
   public void execute(JobExecutionContext context) throws JobExecutionException {
     JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
@@ -44,7 +51,9 @@ public class BeanJob implements InterruptableJob {
       jobBean = (Job) beanFactory.getBean(jobBeanName);
       log.debug("Executing job bean with name: " + jobBeanName);
       jobBean.execute(context);
-    } catch (Exception e) {
+    } catch (NotEnoughResourcesException ex) {    	
+    	throw ex;
+    } catch (Exception e) {    	
       throw new JobExecutionException("Exception occurred running job bean", e);
     }
   }
@@ -55,5 +64,13 @@ public class BeanJob implements InterruptableJob {
       ((InterruptableJob) jobBean).interrupt();
     }
   }
+
+public TaskRunManager getTaskRunManager() {
+	return taskRunManager;
+}
+
+public void setTaskRunManager(TaskRunManager taskRunManager) {
+	this.taskRunManager = taskRunManager;
+}
 
 }

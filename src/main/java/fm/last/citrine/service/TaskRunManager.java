@@ -16,8 +16,10 @@
 package fm.last.citrine.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateTime;
+import org.quartz.JobExecutionContext;
 import org.quartz.JobListener;
 
 import fm.last.citrine.model.Status;
@@ -85,6 +87,8 @@ public interface TaskRunManager extends JobListener {
    */
   public boolean isRunning(long taskId);
 
+  public long getPid(long taskId);
+  
   /**
    * Inform the task run manager that it needs to shut itself down, release all resources etc.
    */
@@ -113,5 +117,8 @@ public interface TaskRunManager extends JobListener {
    * @return True if the TaskRun was stopped, false if the TaskRun could not be stopped.
    */
   public boolean stop(long taskRunId);
+  
+  public List<JobExecutionContext> getRunningTasks();
+  
 
 }
