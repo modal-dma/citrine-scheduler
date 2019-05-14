@@ -3,6 +3,10 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 
+  <welcome-file-list>    
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath:applicationContext.xml</param-value>
@@ -37,6 +41,10 @@
   </servlet-mapping>
   <servlet-mapping>   
     <servlet-name>default</servlet-name>
+    <url-pattern>/images/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>   
+    <servlet-name>default</servlet-name>
     <url-pattern>/logs/*</url-pattern>
    </servlet-mapping>
   <servlet-mapping>   
@@ -51,4 +59,6 @@
     <servlet-name>default</servlet-name>
     <url-pattern>/workspace/*</url-pattern>
   </servlet-mapping>
+  
+  
 </web-app>

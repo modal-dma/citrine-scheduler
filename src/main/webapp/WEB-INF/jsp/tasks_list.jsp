@@ -7,7 +7,8 @@
     <meta http-equiv="refresh" content="30">
   </head>
   <body>
-  	<h1>JobScheduler@modal server</h1>
+  	<%@include file="../../header.jsp" %>
+  	<center>
     <h2>Tasks Overview</h2>
     <p>
     <c:if test='${"admin" == currentUserRole}'>
@@ -58,5 +59,6 @@
       </display:column>
     </display:table>
     <p><a href="index.html">Logout</a></p>
+    </center>
   </body>
 </html>

@@ -20,7 +20,7 @@ table.outlined {
 
 th {
 	background-color: #D9B3FF;
-	border: 1px solid;
+	border: 1px solid #000;
 	padding: 4px;
 }
 
@@ -108,4 +108,33 @@ td.outlined {
 .reference {
   font-size: 60%;
   vertical-align: super;
+}
+
+.header
+{
+	text-align: center;
+}
+
+.login
+{
+	text-align: center;
+}
+
+.logo
+{
+	width:700px;
+	height: auto;
+}
+
+table, td {
+	border: 1px solid #ddd;
+	text-align: left;
+}
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th, td {
+	padding: 15px;
 }

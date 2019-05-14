@@ -1,13 +1,16 @@
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <html>
   <head>
-    <title>Citrine</title>
+    <title>Job Scheduler @ modal server</title>
     <link rel="stylesheet" href="css/generic.css" type="text/css"/>
   </head>
   <body>
-    <h2>JobScheduler@modal server</h2>
+  	<%@include file="header.jsp" %>
+    <center>
     <h3>Login</h3>
     <form method="POST" action="login.jsp">
-    <table>
+    
+    <table style="width: auto;">
     <tr>
     <td>Username:</td>
     <td>
@@ -21,8 +24,10 @@
     </td>
     </tr>    
     </table>
+    
     <br/>
     <input type="submit" value="Login"/>
     </form>
+    </center>
   </body>
 </html>

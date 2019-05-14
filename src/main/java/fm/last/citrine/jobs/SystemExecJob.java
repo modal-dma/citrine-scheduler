@@ -105,7 +105,11 @@ public class SystemExecJob implements InterruptableJob {
     	throw e2;
     }
 
-    this.taskRunId = jobDataMap.getInt(TASK_RUN_ID);
+    Object id = jobDataMap.getOrDefault(TASK_RUN_ID, null);
+    
+    if(id != null)
+    	this.taskRunId = ((Number)id).intValue();
+    
     try {
       execute(jobDataMap.getString(TASK_COMMAND), jobDataMap.getString(TASK_WORKING_DIRECTORY), jobDataMap);
       //execute(jobDataMap.getString(TASK_COMMAND));
