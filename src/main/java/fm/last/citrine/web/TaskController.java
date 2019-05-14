@@ -18,6 +18,9 @@ package fm.last.citrine.web;
 import static fm.last.citrine.web.Constants.PARAM_TASK_ID;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,20 +129,29 @@ public class TaskController extends MultiActionController {
       } else {
         taskRunStatus.put(task.getId(), TASK_STATUS_DISABLED);
       }
-      lastRun.put(task.getId(), periodFormatter.printLastRun(mostRecentTaskRun));
+      lastRun.put(task.getId(), periodFormatter.printLastRunDate(mostRecentTaskRun));
       
       if(mostRecentTaskRun != null)
       {
-	      TaskExtended taskExtended = new TaskExtended(task, mostRecentTaskRun.getStatus());
+	      TaskExtended taskExtended = new TaskExtended(task, mostRecentTaskRun.getStatus(), periodFormatter.printLastRunDate(mostRecentTaskRun));
 	      tasksExtended.add(taskExtended);
       }
       else
       {
-    	  TaskExtended taskExtended = new TaskExtended(task, Status.UNKNOWN);
+    	  TaskExtended taskExtended = new TaskExtended(task, Status.UNKNOWN, periodFormatter.printLastRunDate(mostRecentTaskRun));
 	      tasksExtended.add(taskExtended);
-      }
-      
+      }      
     }
+    
+    Collections.sort(tasksExtended, new Comparator<TaskExtended>() {
+
+		@Override
+		public int compare(TaskExtended o1, TaskExtended o2) {
+			
+			return o2.getLastRun().compareTo(o1.getLastRun());
+		}
+	});
+	
     model.put("lastRun", lastRun);
     model.put("recentStatus", taskRunStatus);
     model.put("tasks", tasks);

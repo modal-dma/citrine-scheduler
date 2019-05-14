@@ -15,6 +15,10 @@
  */
 package fm.last.citrine.web;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import org.joda.time.Period;
@@ -52,5 +56,33 @@ public class LastRunPeriodFormatter {
     }
     return result;
   }
+  
+  public String printLastRunDate(TaskRun mostRecentTaskRun) {
+	    String result = "Never";
+	    if (mostRecentTaskRun != null) {
+	    	
+	    	Date lastRun = mostRecentTaskRun.getStartDate();
+	    	
+	    	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    	return simpleDateFormat.format(lastRun);
+	    	
+//	    	DateFormat df = DateFormat.getDateTimeInstance(SimpleDateFormat.FULL, SimpleDateFormat.FULL, Locale.getDefault());
+//	    	
+//	    	return df.format(lastRun);
+	    	
+//	      // Just started jobs give a time-stamp of less then a minute need to set it to zero otherwise nothing gets printed
+//	      long now = System.currentTimeMillis();
+//	      long recentTaskTime = mostRecentTaskRun.getStartDate().getTime();
+//	      long duration = now - recentTaskTime;
+//	      Period period;
+//	      if (duration < TimeUnit.MINUTES.toMillis(1)) {
+//	        period = new Period(0);
+//	      } else {
+//	        period = new Period(recentTaskTime, now);
+//	      }
+//	      result = periodFormatter.print(period) + " ago";
+	    }
+	    return result;
+	  }
 
 }

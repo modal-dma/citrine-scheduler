@@ -161,34 +161,39 @@ try {
     		  task.setName(value);    	 
     	  else if(fieldName.equals("description"))
     		  task.setDescription(value);
-    	  else if(fieldName.equals("priority"))
-    		  task.setPriority(Integer.parseInt(value));
+//     	  else if(fieldName.equals("priority"))
+//     		  task.setPriority(Integer.parseInt(value));
     	  else if(fieldName.equals("timerSchedule"))
     		  task.setTimerSchedule(value);
     	  else if(fieldName.equals("command"))
     		  task.setCommand(value);
     	  else if(fieldName.equals("schedule"))
     		  task.setTimerSchedule(value);
-    	  else if(fieldName.equals("enabled"))
-    		  task.setEnabled(value.equals("true"));
-    	  else if(fieldName.equals("errorIfRunning"))
-    		  task.setErrorIfRunning(value.equals("true"));
-    	  else if(fieldName.equals("stopOnError"))
-    		  task.setStopOnError(value.equals("true"));
-    	  else if(fieldName.equals("notifyOnSuccess"))
-    		  notification.setNotifyOnSuccess(value.equals("true"));
-    	  else if(fieldName.equals("notifyOnFailure"))
-    		  notification.setNotifyOnFailure(value.equals("true"));
+//     	  else if(fieldName.equals("enabled"))
+//     		  task.setEnabled(value.equals("true"));
+//     	  else if(fieldName.equals("errorIfRunning"))
+//     		  task.setErrorIfRunning(value.equals("true"));
+//     	  else if(fieldName.equals("stopOnError"))
+//     		  task.setStopOnError(value.equals("true"));
+//     	  else if(fieldName.equals("notifyOnSuccess"))
+//     		  notification.setNotifyOnSuccess(value.equals("true"));
+//     	  else if(fieldName.equals("notifyOnFailure"))
+//     		  notification.setNotifyOnFailure(value.equals("true"));
     	  else if(fieldName.equals("notification.recipients"))
     		  notification.setRecipients(value);    	      	
     	  else if(fieldName.equals("ram"))    	
     		  task.setRam(Integer.parseInt(value));
     	  else if(fieldName.equals("cores"))    	
-    		  task.setCores(Integer.parseInt(value));
+    		  task.setCores(Integer.parseInt(value));    	    
       }            
    }
    
    task.setNotification(notification);
+   task.setEnabled(true);
+   task.setErrorIfRunning(true);
+   task.setStopOnError(false);
+   notification.setNotifyOnSuccess(true);
+   notification.setNotifyOnFailure(true);
    taskManager.save(task);
    
    response.sendRedirect("tasks.do");

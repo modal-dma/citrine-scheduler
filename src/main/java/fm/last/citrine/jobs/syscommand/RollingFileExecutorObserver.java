@@ -107,6 +107,7 @@ public class RollingFileExecutorObserver implements SysExecutorObserver {
         log.info("Log file for this run will be located at: " + appender.getFile());
         observerLogger.addAppender(appender);
       } catch (IOException e) {
+    	  //e.printStackTrace();
         log.error(e);
       }
     }
@@ -119,6 +120,9 @@ public class RollingFileExecutorObserver implements SysExecutorObserver {
    * @return
    */
   private String getOutput() {
+	if (appender == null)
+		return "";
+	
     String returnValue = appender.getFile();
     if (tailBytes > 0) {
       try {

@@ -110,6 +110,17 @@ public class TaskFormController extends SimpleFormController {
       backingObject.setSelectedGroupName(selectedGroupName);
     }        
     	    
+    Task t = backingObject.getTask();
+    String scriptFile = t.getScriptfile(); 
+    if(scriptFile != null)
+    	t.setScriptfile(new File(scriptFile).getName());    
+    
+    String datasetFile = t.getDataset();
+    if(datasetFile != null)
+    	t.setDataset(new File(datasetFile).getName());
+    
+//    backingObject.setTask(t);
+    
     return backingObject;
   }
 

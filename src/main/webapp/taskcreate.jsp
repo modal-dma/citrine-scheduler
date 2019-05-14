@@ -59,6 +59,7 @@
             <input name="command" size="80"/>
           </td>
         </tr>        
+        <!-- 
         <tr>
           <td align="right">Enabled:</td>
           <td>
@@ -77,6 +78,7 @@
             <input type="checkbox" name="errorIfRunning"/>
           </td>
         </tr>
+         -->
         <tr>
           <td align="right" valign="top">Notification Recipients:</td>
           <td>
@@ -84,6 +86,7 @@
             (comma-separated list of e-mail addresses)
           </td>
         </tr>
+        <!-- 
         <tr>
           <td align="right">Notify on success:</td>
           <td>
@@ -96,9 +99,10 @@
             <input type="checkbox" name="notification.notifyOnFailure"/>
           </td>
         </tr>
+         -->
         <tr>
           <td align="right">
-            <input type="submit" value="Save" name="update"/>
+            <input type="submit" value="Save and Start" name="update"/>
             <input type="submit" value="Cancel" name="cancel"/>
           </td>
         </tr>

@@ -3,6 +3,13 @@ package fm.last.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class SystemUtil {
 
@@ -113,5 +120,39 @@ public class SystemUtil {
 		}
         
         return null;
+	}
+	
+	public static void pack(String sourceDirPath, String zipFilePath) throws IOException {
+	    Path p = Paths.get(zipFilePath);
+	    try
+	    {	final ZipOutputStream zs = new ZipOutputStream(Files.newOutputStream(p)); 
+	        final Path pp = Paths.get(sourceDirPath);
+	        Files.walk(pp)
+	          .filter(new Predicate<Path>() {
+
+				@Override
+				public boolean test(Path path) {
+					return !Files.isDirectory(path);					
+				}
+			})
+	          .forEach(new Consumer<Path>() {
+
+				@Override
+				public void accept(Path path) {
+					ZipEntry zipEntry = new ZipEntry(pp.relativize(path).toString());
+		              try {
+		                  zs.putNextEntry(zipEntry);
+		                  Files.copy(path, zs);
+		                  zs.closeEntry();
+		            } catch (IOException e) {
+		                System.err.println(e);
+		            }					
+				}
+			});
+	    }
+	    catch(Exception ex)
+	    {
+	    	ex.printStackTrace();	    	
+	    }
 	}
 }

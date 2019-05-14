@@ -7,6 +7,7 @@
     <meta http-equiv="refresh" content="30">
   </head>
   <body>
+  	<h1>JobScheduler@modal server</h1>
     <h2>Tasks Overview</h2>
     <p>
     <c:if test='${"admin" == currentUserRole}'>
@@ -52,10 +53,10 @@
 	        <a href="download.jsp?taskId=${task.id}&selectedGroupName=${selectedGroupName}">Download</a>
 	    </c:if>
       </display:column>
-      <display:column title="last run" class="${task.status}">
+      <display:column title="last run" class="${task.status}" sortable="true">
       	<c:out value="${lastRun[task.id]}"></c:out>
       </display:column>
     </display:table>
-    <p><a href="main.jsp">Back</a></p>
+    <p><a href="index.html">Logout</a></p>
   </body>
 </html>

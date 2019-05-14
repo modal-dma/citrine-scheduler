@@ -172,7 +172,7 @@ private SchedulerManager schedulerManager;
     {
     	JobExecutionContext context = runningTasks.get(taskId);
     	    	
-    	long taskRunId = context.getJobDetail().getJobDataMap().getLong(TASK_RUN_ID);
+    	long taskRunId = context.getJobDetail().getJobDataMap().getInt(TASK_RUN_ID);
         TaskRun taskRun = get(taskRunId);
         
         return taskRun.getPid();        
@@ -271,7 +271,7 @@ private SchedulerManager schedulerManager;
    * @return The saved TaskRun.
    */
   private TaskRun saveFinishedTaskRun(JobDataMap jobDataMap, JobExecutionException exception) {
-    long taskRunId = jobDataMap.getLong(TASK_RUN_ID);
+    long taskRunId = jobDataMap.getInt(TASK_RUN_ID);
     TaskRun taskRun = get(taskRunId);
     taskRun.setEndDate(new Date());
     taskRun.setSysOut(jobDataMap.getString(SYS_OUT));

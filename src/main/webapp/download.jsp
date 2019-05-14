@@ -1,3 +1,8 @@
+<%@page import="fm.last.util.SystemUtil"%>
+<%@page import="java.util.zip.ZipEntry"%>
+<%@page import="java.io.FileInputStream"%>
+<%@page import="java.util.zip.ZipOutputStream"%>
+<%@page import="java.io.FileOutputStream"%>
 <%@ include file="/WEB-INF/jsp/include/taglibs.jsp" %>
 <%@page import="fm.last.citrine.model.Notification"%>
 <%@page import="java.util.Iterator"%>
@@ -54,16 +59,16 @@ String workingDir = task.getWorkingDirectory();
 
 System.out.println(workingDir);
 
-File[] files = new File(workingDir).listFiles();
+File zipFile = File.createTempFile("task", ".zip");
 
-for(File f : files)
-{
-	%>
-	
-	<br/><a href="workspace/<%=task.getGroupName()%>/<%=task.getUuid() %>/<%=f.getName() %>"><%=f.getName() %></a>
-	<% 
-	System.out.println(f);
-}
+SystemUtil.pack(workingDir, zipFile.getAbsolutePath());
+
+Process p = Runtime.getRuntime().exec("mv " + zipFile.getAbsolutePath() + " " + workingDir);
+
+p.waitFor();
+
+response.sendRedirect("workspace/" + task.getGroupName() + "/" + task.getUuid() + "/" + zipFile.getName());
+
 %>
 
 </body>

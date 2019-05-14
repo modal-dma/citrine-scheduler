@@ -45,12 +45,14 @@ public class TaskExtended extends Task {
   private static Logger log = Logger.getLogger(TaskExtended.class);
 
   private Status status;
+  private String lastRun;
   
 
-  public TaskExtended(Task task, Status status)
+  public TaskExtended(Task task, Status status, String lastRun)
   {
 	  super(task);
 	  this.setStatus(status);	  
+	  this.setLastRun(lastRun);
   }
 
 
@@ -61,6 +63,16 @@ public Status getStatus() {
 
 public void setStatus(Status status) {
 	this.status = status;
+}
+
+
+public String getLastRun() {
+	return lastRun;
+}
+
+
+public void setLastRun(String lastRun) {
+	this.lastRun = lastRun;
 }
 
  

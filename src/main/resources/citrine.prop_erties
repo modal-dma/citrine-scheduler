@@ -23,18 +23,18 @@ hibernate.dbcp.validationQuery=SELECT 1+1
 
 ##MAIL SETTINGS
 #hostname or IP address of the mail server
-smtp.host=
+smtp.host=localhost
 #password needed to log onto the server to send email
 smtp.password=
 #email sender for all email notifications
-mail.from=
+mail.from=modal-labdma@gmail.com
 #default address to which job notifications will get sent if no value is set on the job itself
-mail.to=
+mail.to=modal-labdma@gmail.com
 
 ## NOTIFICATION SETTINGS
 #base url to citrine web interface. Optional. Only needs to be set if you want full paths to log files in notification e-mails.
 #should be set to something like http://yourhost:port/citrine/
-#base.citrine.url=
+#base.citrine.url=http://192.167.11.69:8080/citrine
 
 ##QUARTZ SCHEDULER SETTINGS
 org.quartz.scheduler.instanceName = DefaultQuartzScheduler
@@ -50,7 +50,7 @@ org.quartz.jobStore.class = org.quartz.simpl.RAMJobStore
 
 ##SYSEXEC SETTINGS
 #This MUST be the FULL_PATH_TO/TOMCAT_HOME/webapps/citrine/logs/
-sysexec.logpath=/user/local/tomcat/webapps/citrine/logs/
+sysexec.logpath=/opt/tomcat/latest/webapps/citrine/logs/
 #The pattern to use for logging. This uses the log4j format. For more information, see http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html.
 sysexec.logpattern=%d{ISO8601} %m%n
 #Controls how many bytes of the log are displayed when the log is viewed in HTML view.

@@ -66,6 +66,7 @@
             <span class="error"><form:errors path="task.groupName" /></span>
           </td>
         </tr>
+        <!-- 
         <tr>
           <td align="right">Enabled:</td>
           <td>
@@ -84,6 +85,7 @@
             <form:checkbox path="task.errorIfRunning"/>
           </td>
         </tr>
+         -->
         <tr>
           <td align="right" valign="top">Notification Recipients:</td>
           <td>
@@ -91,6 +93,7 @@
             (comma-separated list of e-mail addresses)
           </td>
         </tr>
+        <!-- 
         <tr>
           <td align="right">Notify on success:</td>
           <td>
@@ -103,6 +106,7 @@
             <form:checkbox path="task.notification.notifyOnFailure"/>
           </td>
         </tr>
+         -->
         <tr>
           <td/>
           <td align="right">

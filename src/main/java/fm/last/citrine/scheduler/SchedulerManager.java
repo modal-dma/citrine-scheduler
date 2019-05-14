@@ -128,7 +128,7 @@ public class SchedulerManager implements BeanFactoryAware, TriggerListener {
     JobDetail jobDetail = createJobDetail(task);
     // modify group name otherwise this has potential to clash with other scheduled run of this job
     jobDetail.setGroup(jobDetail.getGroup() + SUFFIX_IMMEDIATE);
-    Trigger trigger = TriggerUtils.makeImmediateTrigger(String.valueOf(task.getId()), 0, 20000);
+    Trigger trigger = TriggerUtils.makeImmediateTrigger(String.valueOf(task.getId()), 0, 1);
     log.info("Scheduling task with id " + task.getId() + " to run now");
     try {
       scheduler.scheduleJob(jobDetail, trigger);
@@ -152,7 +152,7 @@ public class SchedulerManager implements BeanFactoryAware, TriggerListener {
         JobDetail jobDetail = createJobDetail(task);
         log.info("Scheduling task with id " + task.getId() + " and schedule: " + task.getTimerSchedule());
         Trigger trigger;
-        if(task.getTimerSchedule() == null || !task.getTimerSchedule().equals(""))        	
+        if(task.getTimerSchedule() == null || task.getTimerSchedule().equals("") || task.getTimerSchedule().equals("1"))        	
         	trigger = TriggerUtils.makeImmediateTrigger(String.valueOf(task.getId()), 0, 1);
         else
         	trigger = new CronTrigger(String.valueOf(task.getId()), Scheduler.DEFAULT_GROUP, task.getTimerSchedule());

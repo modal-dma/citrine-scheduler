@@ -59,7 +59,7 @@ public class ModalSystemExecJob implements InterruptableJob {
   @Override
   public void execute(JobExecutionContext context) throws JobExecutionException {
     JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
-    this.taskRunId = jobDataMap.getLong(TASK_RUN_ID);
+    this.taskRunId = jobDataMap.getInt(TASK_RUN_ID);
     try {
       execute(jobDataMap.getString(TASK_COMMAND), jobDataMap.getString(TASK_WORKING_DIRECTORY));
     } catch (Exception e) {
