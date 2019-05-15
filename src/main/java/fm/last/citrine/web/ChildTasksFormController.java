@@ -96,6 +96,13 @@ public class ChildTasksFormController extends SimpleFormController {
   @Override
   public ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command,
       BindException errors) {
+	  
+	  String username = (String)getServletContext().getAttribute("username");
+	  if(username == null)
+	  {
+		  return new ModelAndView(new RedirectView("index.jsp"));
+	  }
+	  
     TaskChildCandidatesDTO dto = ((TaskChildCandidatesDTO) command);
     Task task = taskManager.get(dto.getTask().getId());
 

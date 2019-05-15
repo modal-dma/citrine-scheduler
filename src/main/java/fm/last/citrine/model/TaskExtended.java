@@ -36,6 +36,8 @@ import javax.persistence.Version;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.AccessType;
 
+import fm.last.citrine.web.LastRunPeriodFormatter;
+
 /**
  * Class that represents a Task. It contains values that are used to trigger Quartz Jobs at a certain time as well as
  * values that are needed by Tasks to run.
@@ -46,6 +48,10 @@ public class TaskExtended extends Task {
 
   private Status status;
   private String lastRun;
+  private long duration;
+  private String durationString;
+  
+  private LastRunPeriodFormatter periodFormatter = new LastRunPeriodFormatter();
   
 
   public TaskExtended(Task task, Status status, String lastRun)
@@ -75,5 +81,24 @@ public void setLastRun(String lastRun) {
 	this.lastRun = lastRun;
 }
 
- 
+
+public long getDuration() {
+	return duration;
+}
+
+
+public void setDuration(long duration) {
+	this.duration = duration;
+}
+
+
+public String getDurationString() {
+	return durationString;
+}
+
+
+public void setDurationString(String durationString) {
+	this.durationString = durationString;
+}
+
 }

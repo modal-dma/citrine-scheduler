@@ -64,6 +64,12 @@ public class AdminController extends MultiActionController {
   }
 
   public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	  String username = (String)getServletContext().getAttribute("username");
+	  if(username == null)
+	  {
+		  return new ModelAndView(new RedirectView("index.jsp"));
+	  }
+	  
     Map<String, Object> model = new HashMap<String, Object>();
     model.put("buildVersion", buildVersion);
     model.put("buildDateTime", buildDateTime);

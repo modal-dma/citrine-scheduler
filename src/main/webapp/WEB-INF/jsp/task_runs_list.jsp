@@ -7,6 +7,7 @@
     <meta http-equiv="refresh" content="10">
   </head>
   <body>
+  <%@include file="../../header.jsp" %>
     <h2>TaskRuns for ${taskName}</h2>
     <table class="outlined">
       <tr>

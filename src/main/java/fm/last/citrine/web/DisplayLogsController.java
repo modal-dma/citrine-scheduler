@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.HtmlUtils;
 
 import fm.last.citrine.service.LogFileManager;
@@ -50,6 +51,12 @@ public class DisplayLogsController extends MultiActionController {
    * @throws Exception
    */
   public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	  String username = (String)getServletContext().getAttribute("username");
+	  if(username == null)
+	  {
+		  return new ModelAndView(new RedirectView("index.jsp"));
+	  }
+	  
     return new ModelAndView("logs_list", "logFiles", logFileManager.findAllLogFiles());
   }
 

@@ -13,11 +13,12 @@ table {
 	empty-cells: show;
 }
 
+/*
 table.outlined {
 	border: 1px solid;
 	empty-cells: show;
 }
-
+*/
 th {
 	background-color: #D9B3FF;
 	border: 1px solid #000;
@@ -80,8 +81,7 @@ td {
 }
 
 td.outlined {
-	border: 1px solid;
-	padding: 2px;
+	border: 1px solid black;	
 }
 
 .error {
@@ -137,4 +137,14 @@ table {
 
 th, td {
 	padding: 15px;
+}
+
+.td-desc
+{
+	background-color: #CCC;
+}
+
+.td-value
+{
+	background-color: #DDD;
 }

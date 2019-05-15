@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.HtmlUtils;
 
 import fm.last.citrine.model.TaskRun;
@@ -68,6 +69,12 @@ public class DisplayTaskRunMessageController extends MultiActionController {
    * @throws Exception
    */
   public ModelAndView displayStack(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	  String username = (String)getServletContext().getAttribute("username");
+	  if(username == null)
+	  {
+		  return new ModelAndView(new RedirectView("index.jsp"));
+	  }
+	  
     long taskRunId = getTaskRunId(request);
     TaskRun taskRun = taskRunManager.get(taskRunId);
     String message = taskRun.getStackTrace();
@@ -83,6 +90,12 @@ public class DisplayTaskRunMessageController extends MultiActionController {
    * @throws Exception
    */
   public ModelAndView displaySysOut(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	  String username = (String)getServletContext().getAttribute("username");
+	  if(username == null)
+	  {
+		  return new ModelAndView(new RedirectView("index.jsp"));
+	  }
+	  
     long jobRunId = getTaskRunId(request);
     TaskRun taskRun = taskRunManager.get(jobRunId);
     String message = taskRun.getSysOut();
@@ -98,6 +111,12 @@ public class DisplayTaskRunMessageController extends MultiActionController {
    * @throws Exception
    */
   public ModelAndView displaySysErr(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	  String username = (String)getServletContext().getAttribute("username");
+	  if(username == null)
+	  {
+		  return new ModelAndView(new RedirectView("index.jsp"));
+	  }
+	  
     long taskRunId = getTaskRunId(request);
     TaskRun taskRun = taskRunManager.get(taskRunId);
     String message = taskRun.getSysErr();

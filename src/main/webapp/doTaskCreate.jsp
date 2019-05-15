@@ -123,22 +123,31 @@ try {
 	         
 	         if(fieldName.equals("scriptfile"))
 	         {
-	        	 task.setScriptfile(file.getAbsolutePath());
+	        	 if(file.getAbsolutePath().endsWith(".sh"))
+	        	 {
+	        		 getServletContext().setAttribute("error", "Gli script .sh non sono consentiti.");
+	        		 response.sendRedirect("error.jsp");
+	        		 return;
+	        	 }
+	        	 else
+	        	 {
+	        	 	task.setScriptfile(file.getAbsolutePath());
+	        	 }
 	        	 
-	        	 Set<PosixFilePermission> perms = new HashSet();
-	       	    perms.add(PosixFilePermission.OWNER_READ);
-	       	    perms.add(PosixFilePermission.OWNER_WRITE);
-	       	    perms.add(PosixFilePermission.OWNER_EXECUTE);
+// 	        	 Set<PosixFilePermission> perms = new HashSet();
+// 	       	    perms.add(PosixFilePermission.OWNER_READ);
+// 	       	    perms.add(PosixFilePermission.OWNER_WRITE);
+// 	       	    perms.add(PosixFilePermission.OWNER_EXECUTE);
 	
-	       	    perms.add(PosixFilePermission.OTHERS_READ);
-	       	    perms.add(PosixFilePermission.OTHERS_WRITE);
-	       	    perms.add(PosixFilePermission.OTHERS_EXECUTE);
+// 	       	    perms.add(PosixFilePermission.OTHERS_READ);
+// 	       	    perms.add(PosixFilePermission.OTHERS_WRITE);
+// 	       	    perms.add(PosixFilePermission.OTHERS_EXECUTE);
 	
-	       	    perms.add(PosixFilePermission.GROUP_READ);
-	       	    perms.add(PosixFilePermission.GROUP_WRITE);
-	       	    perms.add(PosixFilePermission.GROUP_EXECUTE);
+// 	       	    perms.add(PosixFilePermission.GROUP_READ);
+// 	       	    perms.add(PosixFilePermission.GROUP_WRITE);
+// 	       	    perms.add(PosixFilePermission.GROUP_EXECUTE);
 	
-	       	    Files.setPosixFilePermissions(file.toPath(), perms);
+// 	       	    Files.setPosixFilePermissions(file.toPath(), perms);
 	        	    
 	//       		 file.setWritable(true);
 	//       		 file.setReadable(true);
@@ -182,10 +191,49 @@ try {
     	  else if(fieldName.equals("notification.recipients"))
     		  notification.setRecipients(value);    	      	
     	  else if(fieldName.equals("ram"))    	
+    	  {
+    		  if("".equals(value))
+    		  {
+    			  getServletContext().setAttribute("error", "Valore della RAM richiesta mancante");
+    			   response.sendRedirect("error.jsp");
+    			   return;
+    		  }
+    		  
     		  task.setRam(Integer.parseInt(value));
-    	  else if(fieldName.equals("cores"))    	
-    		  task.setCores(Integer.parseInt(value));    	    
+    	  }
+    	  else if(fieldName.equals("cores"))
+    	  {
+    		  if("".equals(value))
+    		  {
+    			  getServletContext().setAttribute("error", "Valore dei core richiesti mancante");
+    			   response.sendRedirect("error.jsp");
+    			   return;
+    		  }
+    		  
+    		  task.setCores(Integer.parseInt(value));
+    	  }    		      	    
       }            
+   }
+   
+   if(task.getName() == null || task.getName().equals(""))
+   {
+	   getServletContext().setAttribute("error", "Nome del task mancante");
+	   response.sendRedirect("error.jsp");
+	   return;
+   }
+   
+   	if(task.getCommand() == null || task.getCommand().equals(""))
+	{
+   		getServletContext().setAttribute("error", "Comando del task mancante");
+ 	   response.sendRedirect("error.jsp");
+ 	   return;
+	}
+   
+   if(task.getScriptfile() == null || task.getScriptfile().equals(""))
+   {
+	   getServletContext().setAttribute("error", "Script file del task mancante");
+	   response.sendRedirect("error.jsp");
+	   return;
    }
    
    task.setNotification(notification);
@@ -199,6 +247,9 @@ try {
    response.sendRedirect("tasks.do");
 } catch(Exception ex) {
    System.out.println(ex);
+   
+   getServletContext().setAttribute("error", ex.getLocalizedMessage());
+   response.sendRedirect("error.jsp");
 }
 
 %>

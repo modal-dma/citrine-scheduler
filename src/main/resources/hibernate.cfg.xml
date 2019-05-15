@@ -8,5 +8,6 @@
       <mapping class="fm.last.citrine.model.Task"/>
       <mapping class="fm.last.citrine.model.TaskRun"/>
       <mapping class="fm.last.citrine.model.User"/>
+      <mapping class="fm.last.citrine.model.Setting"/>
    </session-factory>
 </hibernate-configuration>

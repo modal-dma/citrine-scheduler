@@ -20,43 +20,43 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import fm.last.citrine.model.User;
+import fm.last.citrine.model.Setting;
 
 /**
  * Data Access Object for managing storage of Tasks.
  */
-public class UserDAO extends HibernateDaoSupport {
+public class SettingDAO extends HibernateDaoSupport {
 
-  private static Logger log = Logger.getLogger(UserDAO.class);
+  private static Logger log = Logger.getLogger(SettingDAO.class);
 
   /**
    * Creates a or updates a Task object in storage.
    * 
    * @param task Task to save.
    */
-  public void save(User user) {
-    getHibernateTemplate().saveOrUpdate(user);
+  public void save(Setting setting) {
+    getHibernateTemplate().saveOrUpdate(setting);
     getHibernateTemplate().flush();
   }
 
   /**
-   * Retrieves a User by its primary key.
+   * Retrieves a Setting by its primary key.
    * 
    * @param id Task id.
    * @return Task identified by the passed id.
    */
-  public User get(long id) {
-    return (User) getHibernateTemplate().get(User.class, id);
+  public Setting get(long id) {
+    return (Setting) getHibernateTemplate().get(Setting.class, id);
   }
 
   /**
-   * Retrieves a User by its username.
+   * Retrieves a Setting by its Settingname.
    * 
-   * @param Username Username.
-   * @return User identified by the passed username.
+   * @param Settingname Settingname.
+   * @return Setting identified by the passed Settingname.
    */
-  public List<User> get(String username) {
-    return getHibernateTemplate().findByNamedParam("from User where username = :username", "username", username);
+  public List<Setting> get(String key) {
+    return getHibernateTemplate().findByNamedParam("from Setting where key = :key", "key", key);
   }
 
   /**
@@ -64,17 +64,7 @@ public class UserDAO extends HibernateDaoSupport {
    * 
    * @return List of all Tasks in storage.
    */
-  public List<User> getUsers() {
-    return getHibernateTemplate().find("from user order by username asc");
-  }
-
-  /**
-   * Retrieves all Tasks belonging to the same group.
-   * 
-   * @param group Name of group.
-   * @return Tasks which are in the passed group.
-   */
-  public List<User> findByRole(String role) {
-    return getHibernateTemplate().findByNamedParam("from User where role = :role", "role", role);
+  public List<Setting> getSettings() {
+    return getHibernateTemplate().find("from Setting order by key asc");
   }
 }

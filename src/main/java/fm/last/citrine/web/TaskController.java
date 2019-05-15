@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -131,16 +132,29 @@ public class TaskController extends MultiActionController {
       }
       lastRun.put(task.getId(), periodFormatter.printLastRunDate(mostRecentTaskRun));
       
+      TaskExtended taskExtended;
       if(mostRecentTaskRun != null)
       {
-	      TaskExtended taskExtended = new TaskExtended(task, mostRecentTaskRun.getStatus(), periodFormatter.printLastRunDate(mostRecentTaskRun));
+	      taskExtended = new TaskExtended(task, mostRecentTaskRun.getStatus(), periodFormatter.printLastRunDate(mostRecentTaskRun));
 	      tasksExtended.add(taskExtended);
+	      
+	      if(mostRecentTaskRun.getStatus() == Status.RUNNING)
+	      {
+	    	  Date startDate = mostRecentTaskRun.getStartDate();
+	    	  
+	    	  Date now = new Date();
+	    	  
+	    	  taskExtended.setDuration(now.getTime() - startDate.getTime());  
+	    	  taskExtended.setDurationString(periodFormatter.printLastRun(mostRecentTaskRun));
+	      }	      
       }
       else
       {
-    	  TaskExtended taskExtended = new TaskExtended(task, Status.UNKNOWN, periodFormatter.printLastRunDate(mostRecentTaskRun));
+    	  taskExtended = new TaskExtended(task, Status.UNKNOWN, periodFormatter.printLastRunDate(mostRecentTaskRun));
 	      tasksExtended.add(taskExtended);
       }      
+      
+      
     }
     
     Collections.sort(tasksExtended, new Comparator<TaskExtended>() {
@@ -169,11 +183,18 @@ public class TaskController extends MultiActionController {
    * @throws Exception
    */
   public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    Map<String, Object> model = new HashMap<String, Object>();
-    model.put("schedulerStatus", schedulerManager.getStatus());
-    List<Task> tasks = handleGroupNames(request.getParameter(Constants.PARAM_SELECTED_GROUP_NAME), model);
-    processTasks(tasks, model);
-    return new ModelAndView("tasks_list", model);
+
+	  String username = (String)getServletContext().getAttribute("username");
+	  if(username == null)
+	  {
+		  return new ModelAndView(new RedirectView("index.jsp"));
+	  }
+    
+	  Map<String, Object> model = new HashMap<String, Object>();
+	  model.put("schedulerStatus", schedulerManager.getStatus());
+	  List<Task> tasks = handleGroupNames(request.getParameter(Constants.PARAM_SELECTED_GROUP_NAME), model);
+	  processTasks(tasks, model);
+	  return new ModelAndView("tasks_list", model);
   }
 
   /**
@@ -185,6 +206,12 @@ public class TaskController extends MultiActionController {
    * @throws Exception
    */
   public ModelAndView run(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	  String username = (String)getServletContext().getAttribute("username");
+	  if(username == null)
+	  {
+		  return new ModelAndView(new RedirectView("index.jsp"));
+	  }
+	  
     long taskId = RequestUtils.getLongValue(request, PARAM_TASK_ID);
     log.debug("Received request to run task " + taskId);
     Task task = taskManager.get(taskId);
@@ -204,6 +231,12 @@ public class TaskController extends MultiActionController {
    * @throws Exception
    */
   public ModelAndView reset(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	  String username = (String)getServletContext().getAttribute("username");
+	  if(username == null)
+	  {
+		  return new ModelAndView(new RedirectView("index.jsp"));
+	  }
+	  
     long taskId = RequestUtils.getLongValue(request, PARAM_TASK_ID);
     log.debug("Received request to reset task " + taskId);
     Task task = taskManager.get(taskId);

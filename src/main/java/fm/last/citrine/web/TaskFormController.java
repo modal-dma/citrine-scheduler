@@ -147,6 +147,13 @@ public class TaskFormController extends SimpleFormController {
   @Override
   public ModelAndView processFormSubmission(HttpServletRequest request, HttpServletResponse response, Object command,
       BindException errors) throws Exception {
+	  
+	  String username = (String)getServletContext().getAttribute("username");
+	  if(username == null)
+	  {
+		  return new ModelAndView(new RedirectView("index.jsp"));
+	  }
+	  
     if (request.getParameter(PARAM_CANCEL) != null) {
       TaskDTO taskDTO = (TaskDTO) command;
       return new ModelAndView(new RedirectView(getSuccessView(taskDTO.getSelectedGroupName())));
@@ -157,6 +164,13 @@ public class TaskFormController extends SimpleFormController {
   @Override
   public ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command,
       BindException errors) {
+	  
+	  String username = (String)getServletContext().getAttribute("username");
+	  if(username == null)
+	  {
+		  return new ModelAndView(new RedirectView("index.jsp"));
+	  }
+	  
     TaskDTO taskDTO = (TaskDTO) command;
     Task oldTask = taskManager.get(taskDTO.getTask().getId());
     if (request.getParameter(PARAM_DELETE) != null) {

@@ -5,21 +5,22 @@
     <link rel="stylesheet" href="css/generic.css" type="text/css"/>
   </head>
   <body>
+  <%@include file="../../header.jsp" %>
     <form:form commandName="taskDTO" method="POST" action="task_edit.do" enctype="miltipart/form-data" >
       <form:hidden path="selectedGroupName"/>
       <form:hidden path="task.id"/>
       <form:hidden path="task.version"/>
       <table>
         <tr>
-          <td align="right">* Name:</td>
-          <td>
-            <form:input path="task.name" size="30"/>
+          <td class="td-desc" align="right">* Name:</td>
+          <td class="td-value">
+            <form:input path="task.name" size="80"/>
             <span class="error"><form:errors path="task.name" /></span>
           </td>
         </tr>
         <tr>
-          <td align="right" valign="top">Description:</td>
-          <td>
+          <td class="td-desc"  align="right" valign="top">Description:</td>
+          <td class="td-value">
             <form:textarea path="task.description" rows="5" cols="80"/>
           </td>
         </tr>
@@ -32,20 +33,20 @@
         </tr>
          -->
         <tr>
-          <td align="right">Script File:</td>
-          <td>
+          <td class="td-desc" align="right">Script File:</td>
+          <td class="td-value">
             <form:input path="task.scriptfile" enabled="false" size="80"/>
           </td>
         </tr>
         <tr>
-          <td align="right">DataSet:</td>
-          <td>
+          <td class="td-desc" align="right">DataSet:</td>
+          <td class="td-value">
             <form:input path="task.dataset" enabled="false" size="80"/>
           </td>
         </tr>
         <tr>
-          <td align="right">Command:</td>
-          <td>
+          <td class="td-desc" align="right">Command:</td>
+          <td class="td-value">
             <form:input path="task.command" size="80"/>
           </td>
         </tr>
@@ -60,8 +61,8 @@
         </tr>
          -->        
         <tr>
-          <td align="right">* Group Name:</td>
-          <td>
+          <td class="td-desc" align="right"> User:</td>
+          <td class="td-value">
             <form:input path="task.groupName"/>
             <span class="error"><form:errors path="task.groupName" /></span>
           </td>
@@ -87,8 +88,8 @@
         </tr>
          -->
         <tr>
-          <td align="right" valign="top">Notification Recipients:</td>
-          <td>
+          <td class="td-desc" align="right" valign="top">Notification Recipients:</td>
+          <td class="td-value">
             <form:input path="task.notification.recipients" size="80"/><br/> 
             (comma-separated list of e-mail addresses)
           </td>
@@ -106,20 +107,23 @@
             <form:checkbox path="task.notification.notifyOnFailure"/>
           </td>
         </tr>
-         -->
+         
         <tr>
           <td/>
           <td align="right">
-          <!-- 
+           
             <c:if test="${not empty taskDTO.task.id && taskDTO.task.id != 0}">
               <a href="task_children.do?taskId=${taskDTO.task.id}&selectedGroupName=${selectedGroupName}">Manage child tasks</a>
             </c:if>
-             -->
+            
           </td>
         </tr>
+        -->
         <tr>
-          <td/>
-          <td align="right">
+          <td class="td-desc">
+          &nbsp;
+          </td>
+          <td class="td-value" align="right">
             <!--  <input type="submit" value="Save" name="update"/> -->
             <c:if test="${not empty taskDTO.task.id && taskDTO.task.id != 0}">
               <input type="submit" value="Delete" name="delete" onClick="return confirm('Are you sure you want to delete this task?')"/>

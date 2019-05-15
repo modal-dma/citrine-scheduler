@@ -5,36 +5,37 @@
     <link rel="stylesheet" href="css/generic.css" type="text/css"/>
   </head>
   <body>
+  <%@include file="header.jsp" %>
     <form method="POST" action="doTaskCreate.jsp" enctype = "multipart/form-data">      
       <table>
         <tr>
-          <td align="right">* Name:</td>
-          <td>
-            <input name="name" size="30"/>
+          <td class="td-desc" align="right">* Name:</td>
+          <td class="td-value">
+            <input name="name" size="80"/>
             <span class="error"><form:errors name="name.error" /></span>
           </td>
         </tr>
         <tr>
-          <td align="right" valign="top">Description:</td>
-          <td>
-            <input type="text" name="description" rows="5" cols="80"/>
+          <td class="td-desc" align="right" valign="top">Description:</td>
+          <td class="td-value">
+            <input type="text" name="description" size="80"/>
           </td>
         </tr>
         <tr>
-          <td align="right" valign="top">Needed RAM (GB):</td>
-          <td>
-            <input type="text" name="ram" rows="5" cols="10"/>
+          <td class="td-desc" align="right" valign="top">Needed RAM (GB):</td>
+          <td class="td-value">
+            <input type="text" name="ram" size="3"/>
           </td>
         </tr>
         <tr>
-          <td align="right" valign="top">Number of needed cores:</td>
-          <td>
-            <input type="text" name="cores" rows="5" cols="5"/>
+          <td class="td-desc" align="right" valign="top">Number of needed cores:</td>
+          <td class="td-value">
+            <input type="text" name="cores" size="3"/>
           </td>
         </tr>
         <tr>
-          <td align="right">Schedule:</td>
-          <td>
+          <td class="td-desc" align="right">Schedule:</td>
+          <td class="td-value">
             <select name="timerSchedule">
 			  <option value="1">Prima Possibile</option>
 			  <option value="2">Attendi la coda</option>			  
@@ -42,20 +43,20 @@
           </td>
         </tr>
         <tr>
-          <td align="right">Script File:</td>
-          <td>
+          <td class="td-desc" align="right">Script File:</td>
+          <td class="td-value">
             <input type="file" name="scriptfile" size="80"/>
           </td>
         </tr>
         <tr>
-          <td align="right">DataSet:</td>
-          <td>
+          <td class="td-desc" align="right">DataSet:</td>
+          <td class="td-value">
             <input type="file" name="dataset" size="80"/>
           </td>
         </tr>
         <tr>
-          <td align="right">Command:</td>
-          <td>
+          <td class="td-desc" align="right">Command:</td>
+          <td class="td-value">
             <input name="command" size="80"/>
           </td>
         </tr>        
@@ -80,8 +81,8 @@
         </tr>
          -->
         <tr>
-          <td align="right" valign="top">Notification Recipients:</td>
-          <td>
+          <td class="td-desc" align="right" valign="top">Notification Recipients:</td>
+          <td class="td-value">
             <input name="notification.recipients" size="80"/><br/> 
             (comma-separated list of e-mail addresses)
           </td>
@@ -101,9 +102,12 @@
         </tr>
          -->
         <tr>
-          <td align="right">
+        <td class="td-desc">
+        &nbsp;
+        </td>
+          <td class="td-value" align="right">
             <input type="submit" value="Save and Start" name="update"/>
-            <input type="submit" value="Cancel" name="cancel"/>
+            <input type="button" value="Cancel" name="cancel" onclick="window.history.back();"/>
           </td>
         </tr>
       </table>

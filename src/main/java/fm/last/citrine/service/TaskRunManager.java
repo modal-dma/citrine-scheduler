@@ -23,6 +23,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobListener;
 
 import fm.last.citrine.model.Status;
+import fm.last.citrine.model.Task;
 import fm.last.citrine.model.TaskRun;
 
 /**
@@ -119,6 +120,7 @@ public interface TaskRunManager extends JobListener {
   public boolean stop(long taskRunId);
   
   public List<JobExecutionContext> getRunningTasks();
+  public List<Task> getTasks();
   
 
 }

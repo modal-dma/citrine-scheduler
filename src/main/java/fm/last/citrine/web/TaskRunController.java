@@ -29,6 +29,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import fm.last.citrine.model.Status;
 import fm.last.citrine.model.Task;
@@ -60,6 +61,13 @@ public class TaskRunController extends MultiActionController {
    * @throws Exception
    */
   public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	  
+	  String username = (String)getServletContext().getAttribute("username");
+	  if(username == null)
+	  {
+		  return new ModelAndView(new RedirectView("index.jsp"));
+	  }
+	  
     long taskId = RequestUtils.getLongValue(request, PARAM_TASK_ID);
     int currentPage = 0;
     String pageString = request.getParameter(PARAM_PAGE);
@@ -120,6 +128,13 @@ public class TaskRunController extends MultiActionController {
    * @throws Exception
    */
   public ModelAndView delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	  
+	  String username = (String)getServletContext().getAttribute("username");
+	  if(username == null)
+	  {
+		  return new ModelAndView(new RedirectView("index.jsp"));
+	  }
+	  
     long taskRunId = RequestUtils.getLongValue(request, PARAM_TASK_RUN_ID);
     taskRunManager.delete(taskRunId);
     return list(request, response);
@@ -134,6 +149,13 @@ public class TaskRunController extends MultiActionController {
    * @throws Exception
    */
   public ModelAndView stop(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	  
+	  String username = (String)getServletContext().getAttribute("username");
+	  if(username == null)
+	  {
+		  return new ModelAndView(new RedirectView("index.jsp"));
+	  }
+	  
     long taskRunId = RequestUtils.getLongValue(request, PARAM_TASK_RUN_ID);
     taskRunManager.stop(taskRunId);
     return list(request, response);
