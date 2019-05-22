@@ -17,14 +17,18 @@ List<User> users = userManager.findByUsername(username);
 
 if(users.size() == 0)
 {
-	response.sendRedirect("index.html?error=1");
+	getServletContext().setAttribute("error", "User not found.");
+	response.sendRedirect("error.jsp");
+	return;
 }
 else
 {
 	User user = users.get(0);
 	if(!user.getPassword().equals(password))
 	{
-		response.sendRedirect("index.html?error=2");
+		getServletContext().setAttribute("error", "Wrong password.");
+		response.sendRedirect("error.jsp");
+		return;
 	}
 	else
 	{

@@ -43,17 +43,19 @@
           </td>
         </tr>
         <tr>
-          <td class="td-desc" align="right">Script File:</td>
+          <td class="td-desc" align="right">Zip File:</td>
           <td class="td-value">
-            <input type="file" name="scriptfile" size="80"/>
+            <input type="file" name="zipfile" size="80"/>
           </td>
         </tr>
+        <!-- 
         <tr>
           <td class="td-desc" align="right">DataSet:</td>
           <td class="td-value">
             <input type="file" name="dataset" size="80"/>
           </td>
         </tr>
+         -->
         <tr>
           <td class="td-desc" align="right">Command:</td>
           <td class="td-value">

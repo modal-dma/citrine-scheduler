@@ -31,7 +31,7 @@
             <span class="error"><form:errors path="task.timerSchedule" /></span>
           </td>
         </tr>
-         -->
+         
         <tr>
           <td class="td-desc" align="right">Script File:</td>
           <td class="td-value">
@@ -50,6 +50,7 @@
             <form:input path="task.command" size="80"/>
           </td>
         </tr>
+        -->
         <!-- 
         <tr>
           <td align="right">Bean name:</td>

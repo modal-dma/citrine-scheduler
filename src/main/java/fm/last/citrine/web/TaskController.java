@@ -110,6 +110,11 @@ public class TaskController extends MultiActionController {
     
     for (Task task : tasks) {
 
+    	if(task.getGroupName().equals("admin") && !taskManager.getUserManager().getCurrentUser().getRole().equals("admin"))
+    	{
+    		continue;
+    	}
+    	
       // limit the description text based in the gui (we could also do this via displaytag)
       String description = task.getDescription();
       if (description != null) {

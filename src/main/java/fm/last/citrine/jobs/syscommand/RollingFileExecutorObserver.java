@@ -97,6 +97,7 @@ public class RollingFileExecutorObserver implements SysExecutorObserver {
    */
   private void init() {
     if (appender == null) {
+    	log.info("Log file for this run will be located at: " + baseLogPath + jobRunId + ".log");
       // need to create a new log4j hierarchy so values in log4j.xml are ignored
       observerLogger = new Hierarchy(new RootLogger(Level.DEBUG)).getLogger(this.getClass().getName());
       PatternLayout layout = new PatternLayout();

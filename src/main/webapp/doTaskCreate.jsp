@@ -1,3 +1,4 @@
+<%@page import="fm.last.util.SystemUtil"%>
 <%@page import="java.util.HashSet"%>
 <%@page import="java.nio.file.Files"%>
 <%@page import="java.nio.file.attribute.FileAttribute"%>
@@ -52,11 +53,14 @@ task.setPriority(Integer.parseInt(priority));
 */
 
 String uuid = "" + System.currentTimeMillis();
-String relativeWebPath = "/workspace";
-String absoluteDiskPath = getServletContext().getRealPath(relativeWebPath);
-File workingDirectory = new File(absoluteDiskPath, username.replace(" ", "_") + File.separator + uuid);
+
+String baseWorkingDir = "/var/tmp/jobscheduler/workspace";
+File workingDirectory = new File(baseWorkingDir, username.replace(" ", "_") + File.separator + uuid);
 if(!workingDirectory.exists())
-	workingDirectory.mkdirs();
+	if(!workingDirectory.mkdirs())
+	{
+		System.out.println("unable to mkdirs " + workingDirectory.getAbsolutePath());
+	}
 
 //task.setWorkingDirectory(workingDirectory.getAbsolutePath());
 
@@ -121,18 +125,23 @@ try {
 	         
 	         fi.write( file ) ;
 	         
-	         if(fieldName.equals("scriptfile"))
+	         if(fieldName.equals("zipfile"))
 	         {
-	        	 if(file.getAbsolutePath().endsWith(".sh"))
-	        	 {
-	        		 getServletContext().setAttribute("error", "Gli script .sh non sono consentiti.");
-	        		 response.sendRedirect("error.jsp");
-	        		 return;
-	        	 }
-	        	 else
-	        	 {
-	        	 	task.setScriptfile(file.getAbsolutePath());
-	        	 }
+	        	 SystemUtil.unpack(file.getAbsolutePath(), workingDirectory.getAbsolutePath());
+	         }
+	         
+	         file.delete();
+	         
+// 	        	 if(file.getAbsolutePath().endsWith(".sh"))
+// 	        	 {
+// 	        		 getServletContext().setAttribute("error", "Gli script .sh non sono consentiti.");
+// 	        		 response.sendRedirect("error.jsp");
+// 	        		 return;
+// 	        	 }
+// 	        	 else
+// 	        	 {
+// 	        	 	task.setScriptfile(file.getAbsolutePath());
+// 	        	 }
 	        	 
 // 	        	 Set<PosixFilePermission> perms = new HashSet();
 // 	       	    perms.add(PosixFilePermission.OWNER_READ);
@@ -149,16 +158,16 @@ try {
 	
 // 	       	    Files.setPosixFilePermissions(file.toPath(), perms);
 	        	    
-	//       		 file.setWritable(true);
-	//       		 file.setReadable(true);
-	//       		 file.setExecutable(true);        		 
-	         }
-	         else if(fieldName.equals("dataset"))
-	         {
-	        	 task.setDataset(file.getAbsolutePath());
-	        	 file.setWritable(true);
-	       		 file.setReadable(true);
-	         }
+// 	      		 file.setWritable(true);
+// 	      		 file.setReadable(true);
+// 	      		 file.setExecutable(true);        		 
+// 	         }
+// 	         else if(fieldName.equals("dataset"))
+// 	         {
+// 	        	 task.setDataset(file.getAbsolutePath());
+// 	        	 file.setWritable(true);
+// 	       		 file.setReadable(true);
+// 	         }
          }
          
       }
@@ -229,12 +238,12 @@ try {
  	   return;
 	}
    
-   if(task.getScriptfile() == null || task.getScriptfile().equals(""))
-   {
-	   getServletContext().setAttribute("error", "Script file del task mancante");
-	   response.sendRedirect("error.jsp");
-	   return;
-   }
+//    if(task.getScriptfile() == null || task.getScriptfile().equals(""))
+//    {
+// 	   getServletContext().setAttribute("error", "Script file del task mancante");
+// 	   response.sendRedirect("error.jsp");
+// 	   return;
+//    }
    
    task.setNotification(notification);
    task.setEnabled(true);

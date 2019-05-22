@@ -62,8 +62,14 @@ System.out.println(workingDir);
 File zipFile = File.createTempFile("task", ".zip");
 
 SystemUtil.pack(workingDir, zipFile.getAbsolutePath());
+String uuid = "" + System.currentTimeMillis();
+String relativeWebPath = "/workspace";
+String absoluteDiskPath = getServletContext().getRealPath(relativeWebPath);
+File webWorkingDirectory = new File(absoluteDiskPath, task.getGroupName() + "/" + task.getUuid());
+if(!webWorkingDirectory.exists())
+	webWorkingDirectory.mkdirs();
 
-Process p = Runtime.getRuntime().exec("mv " + zipFile.getAbsolutePath() + " " + workingDir);
+Process p = Runtime.getRuntime().exec("mv " + zipFile.getAbsolutePath() + " " + webWorkingDirectory);
 
 p.waitFor();
 

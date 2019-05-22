@@ -96,14 +96,14 @@ public class SystemExecJob implements InterruptableJob {
     	throw e2;
     }
 
-    int neededCores = jobDataMap.getInt(TASK_CORES);
-    if(systemUsage.totalCPUPercentage / 100 * CORE_NUM < neededCores)
-    {
-    	JobExecutionException e2 = new JobExecutionException("Not enough CORE available");
-    	//fire it again
-    	e2.setRefireImmediately(true);
-    	throw e2;
-    }
+//    int neededCores = jobDataMap.getInt(TASK_CORES);
+//    if(systemUsage.totalCPUPercentage / 100 * CORE_NUM > neededCores)
+//    {
+//    	JobExecutionException e2 = new JobExecutionException("Not enough CORE available");
+//    	//fire it again
+//    	e2.setRefireImmediately(true);
+//    	throw e2;
+//    }
 
     Object id = jobDataMap.getOrDefault(TASK_RUN_ID, null);
     

@@ -271,7 +271,7 @@ private SchedulerManager schedulerManager;
    * @return The saved TaskRun.
    */
   private TaskRun saveFinishedTaskRun(JobDataMap jobDataMap, JobExecutionException exception) {
-    long taskRunId = jobDataMap.getInt(TASK_RUN_ID);
+    long taskRunId = jobDataMap.getLong(TASK_RUN_ID);
     TaskRun taskRun = get(taskRunId);
     taskRun.setEndDate(new Date());
     taskRun.setSysOut(jobDataMap.getString(SYS_OUT));
@@ -420,4 +420,8 @@ private SchedulerManager schedulerManager;
     this.notifier = notifier;
   }
 
+  public List<Task> getTasks()
+  {
+	  return taskManager.getTasks();
+  }
 }
